@@ -1,0 +1,291 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:View xmlns:fx="http://ns.adobe.com/mxml/2009" 
+        xmlns:s="library://ns.adobe.com/flex/spark"
+		xmlns:mx="library://ns.adobe.com/flex/mx"
+		title="{data.type == ClothesMachine.WASHER?'Washer':'Dryer'} {data.number}" viewActivate="refresh()" creationComplete="init();" width="100%" height="100%" backgroundColor="0x222222">
+	<s:mouseDown>
+		<![CDATA[
+		this.dragStart = { x:event.stageX, y:event.stageY };
+		this.bg.startDrag(false, new flash.geom.Rectangle(20, -1000, 0, 2000));
+		]]>
+	</s:mouseDown>
+	<s:mouseUp>
+		<![CDATA[
+import com.greensock.data.TweenLiteVars;
+import com.greensock.TweenLite;
+import spark.effects.easing.Power;
+import flash.geom.Rectangle;
+import spark.effects.Move;
+import spark.transitions.SlideViewTransition;
+import spark.transitions.SlideViewTransitionMode;
+		const deadZone:Number = 70;
+		var arr:Array = FlexGlobals.topLevelApplication.persistenceManager.getProperty("machineListData");
+		var arrLength:int = arr.length;
+		var curIndex:int = 0;
+		var i:int = 0;
+		
+		var moveEffect:Move = new Move(this.bg);
+		moveEffect.duration = 50;
+		
+		var transition:SlideViewTransition = new SlideViewTransition();
+		transition.mode = SlideViewTransitionMode.PUSH;
+		transition.easer = new Power(0);
+		
+		for ( i = 0; i < arrLength; i++ )
+		{
+			if (arr[i].hasOwnProperty("number") && arr[i].number == data.number)
+			{
+				curIndex = i;
+				trace(curIndex);
+				break;
+			}
+		}
+		
+		if (event.stageY -this.dragStart.y > deadZone && Math.abs(this.dragStart.x - event.stageX) < deadZone)
+		{
+			
+			for (i = curIndex - 1; i >=0; i--)
+			{
+				if (!arr[i].hasOwnProperty("header") || arr[i].header == false)
+				{
+					transition.direction = "down";
+					this.navigator.replaceView(MachineView, arr[i],null,transition);
+					this.bg.stopDrag();
+					return;
+				}
+			}
+			
+			//if none are above
+			//transition.direction = "down";
+			//this.navigator.replaceView(MachineView, this.data ,null,transition);
+			this.bg.stopDrag();
+			moveEffect.yFrom = this.bg.y;
+			moveEffect.xTo = 20;
+			moveEffect.yTo = 20;
+			moveEffect.play();
+			return;
+			
+		}
+		if (event.stageY -this.dragStart.y < -deadZone && Math.abs(this.dragStart.x - event.stageX) < deadZone)
+		{
+			
+			for (i = curIndex + 1 ; i <arrLength; i++)
+			{
+				if (!arr[i].hasOwnProperty("header") || arr[i].header == false)
+				{
+					transition.direction = "up";
+					this.navigator.replaceView(MachineView, arr[i],null,transition);
+					this.bg.stopDrag();
+					return;
+				}
+			}
+			
+			//if none are above
+			this.bg.stopDrag();
+			moveEffect.yFrom = this.bg.y;
+			moveEffect.xTo = 20;
+			moveEffect.yTo = 20;
+			moveEffect.play();
+			return;
+			
+		}
+		if (event.stageX - this.dragStart.x > deadZone && Math.abs(this.dragStart.y - event.stageY) < deadZone)
+		{
+			this.bg.stopDrag();
+			navigator.popView();
+			return;
+		}
+		this.bg.stopDrag();
+		moveEffect.yFrom = this.bg.y;
+		moveEffect.xTo = 20;
+		moveEffect.yTo = 20;
+		moveEffect.play();
+		
+		
+		]]>
+		
+	</s:mouseUp>
+	<fx:Script>
+		<![CDATA[
+		import flash.events.Event;
+		import flash.events.KeyboardEvent;
+		import flash.system.Capabilities;
+		import mx.managers.PopUpManager;
+		import net.zdremann.esuds.ClothesMachine;
+		import spark.transitions.SlideViewTransition;
+		import spark.managers.PersistenceManager;
+		import mx.core.FlexGlobals;
+		import flash.net.URLVariables;
+		
+		private var dragStart:Object = { x:0, y:0 };
+		
+		public var xml:XML;
+		public function init():void
+		{
+			if(Capabilities.version.indexOf("AND")==0)
+				this.addEventListener(KeyboardEvent.KEY_DOWN, onKeyDown_Handler);
+			if(this.emailOrPhone && FlexGlobals.topLevelApplication.persistenceManager.getProperty('emailOrPhone'))
+				this.emailOrPhone.text = FlexGlobals.topLevelApplication.persistenceManager.getProperty('emailOrPhone');
+		}
+		
+		private function onKeyDown_Handler(e:KeyboardEvent):void 
+		{
+			switch(e.keyCode)
+			{
+			case Keyboard.BACK:
+				navigator.popToFirstView();
+				break;
+			}
+		}
+		
+		
+		override public function set data(value:Object):void 
+		{
+			super.data = value;
+			if (value && value.hasOwnProperty("status"))
+			{
+				switch(value.status)
+				{
+				case ClothesMachine.AVAILABLE:
+					this.currentState = "available";
+					break;
+				case ClothesMachine.CYCLE_COMPLETE:
+					this.currentState = "cycleComplete";
+					break;
+				case ClothesMachine.IN_USE:
+					this.currentState = "inUse";
+					break;
+				default:
+					this.currentState = "other";
+				}
+			}
+		}
+		
+		public function refresh():void
+		{
+			var loader:flash.net.URLLoader = new URLLoader();
+			loader.addEventListener(Event.COMPLETE, loaderCompleate_Handler);
+			loader.load(new URLRequest("http://stevenson.esuds.net/RoomStatus/machineStatus.i?bottomLocationId="+ FlexGlobals.topLevelApplication.persistenceManager.getProperty("room").roomId));
+		}
+		private function loaderCompleate_Handler(e:Event):void
+		{
+			var txt:String = e.target.data;
+			var reg:RegExp = new RegExp("xmlns=\".*\"");
+			txt = txt.replace(reg, "");
+			reg = new RegExp("<script.*</script>", "gis");
+			txt = txt.replace(reg, "");
+			xml = new XML(txt);
+			
+			var att:XMLList = new XMLList();
+			
+			var machine:ClothesMachine;
+			var number:int = -1
+			
+			if (data && data.hasOwnProperty("number"))
+			{
+				number = data.number;
+			}
+			
+			for each(var tr:XML in xml.tr)
+			{
+				if (tr.attributes().length() != 0 && (tr.attribute("class")=="even" || tr.attribute("class")=="odd") && int(tr.td[1].text()) == number)
+				{
+					
+					machine = new ClothesMachine();
+					// Set machine id
+					if (tr.td[0].input.length() == 1)
+					{
+						machine.id = tr.td[0].input[0].@value;
+					}
+					//set machine number
+					machine.number = tr.td[1].text();
+					//set machine status
+					if (tr.td[3].font[0].text() == "In Use")
+						machine.status = ClothesMachine.IN_USE;
+					else if (tr.td[3].font[0].text() == "Available")
+						machine.status = ClothesMachine.AVAILABLE;
+					else if (tr.td[3].font[0].text() == "Cycle Complete")
+						machine.status = ClothesMachine.CYCLE_COMPLETE;
+					else if (tr.td[3].font[0].text() == "Unavailable")
+						machine.status = ClothesMachine.UNAVAILABLE;
+					
+				
+					// set machine time remaining
+					if (tr.td[4].text() != "&nbsp;")
+					{
+						machine.timeRemaining = tr.td[4].text();
+					}
+					
+					//Set machine type
+					if ((tr.td[2].text().toString() as String).indexOf("Washer") != -1)
+					{
+						machine.type = ClothesMachine.WASHER;
+					}
+					else if ((tr.td[2].text().toString() as String).indexOf("Dryer") != -1)
+					{
+						machine.type = ClothesMachine.DRYER;
+					}
+					break;
+				}
+			}
+			this.data = machine;
+		}
+		
+		private function postloaderCompleate_Handler(e:Event):void
+		{
+			var data:String = e.target.data;
+			if (data.indexOf("errors") != -1)
+			{
+				trace("there was an error");
+			}
+		}
+		]]>
+	</fx:Script>
+	<s:states>
+		<s:State name="available" />
+		<s:State name="cycleComplete" />
+		<s:State name="inUse" />
+		<s:State name="other" />
+	</s:states>
+	<fx:Declarations>
+		<mx:EmailValidator id="emailValid" source="{emailOrPhone}" property="text" required="true" />
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+	</fx:Declarations>
+	<s:SkinnableContainer id="bg" top="20" bottom="20" right="20" left="20" skinClass="net.zdremann.esuds.skins.CustomSkinnableContainerSkin"
+						   backgroundColor.available="0x24850c" backgroundColor.cycleComplete="0xbC480A" backgroundColor.inUse="0xcc2525" backgroundColor.other="0x999999">
+		<s:layout>
+			<s:VerticalLayout gap="20" />
+		</s:layout>
+		<s:Label text="{this.title}" styleName="Title" />
+		<s:Label text="Dryer Status: {ClothesMachine.statusToString(data.status)}" styleName="SubTitle" />
+		<s:Label text="{data.timeRemaining} Minutes Remaining" includeIn="inUse" styleName="SubTitle" />
+		<s:VGroup width="100%" excludeFrom="available" gap="5">
+			<s:Label text="Notify me when available: " />
+			<s:TextInput id="emailOrPhone" typicalText="Enter your email" width="100%" />
+		</s:VGroup>
+		<s:Button excludeFrom="available" width="100%" label="Notify Me">
+			<s:click>
+				<![CDATA[
+import flash.net.URLLoader;
+import flash.net.URLRequest;
+				emailValid.validate();
+				if (!emailOrPhone.errorString)
+				{
+					FlexGlobals.topLevelApplication.persistenceManager.setProperty("emailOrPhone", emailOrPhone.text);
+					var vars:URLVariables = new URLVariables();
+					var req:URLRequest = new URLRequest("http://stevenson.esuds.net/RoomStatus/requestNotification.do");
+					vars.roomId = FlexGlobals.topLevelApplication.persistenceManager.getProperty('room').roomId;
+					vars.emailAddress = emailOrPhone.text;
+					vars.selectedMachines = data.id;
+					req.data = vars;
+					req.method = "POST";
+					var loader:URLLoader = new URLLoader();
+					loader.addEventListener(Event.COMPLETE, postloaderCompleate_Handler);
+					loader.load(req);
+				}
+				
+				]]>
+			</s:click>
+		</s:Button>
+	</s:SkinnableContainer>
+</s:View>
