@@ -164,7 +164,7 @@
 			else
 				return true;
 		}
-		private function machineListTouchInteractionEnd_Handler(event:TouchInteractionEvent):void
+		private function machineListTouchInteractionStarting_Handler(event:TouchInteractionEvent):void
 		{
 			event.preventDefault();
 			event.stopImmediatePropagation();
@@ -216,7 +216,7 @@
 	</fx:Declarations>
 	<s:List id="machineList" dataProvider="{machineListData}" itemRenderer="net.zdremann.esuds.CardMachineItemRenderer"
 			width="100%" height="100%" useVirtualLayout="false" typicalItem="{this}"
-			touchInteractionStarting="machineListTouchInteractionEnd_Handler(event)">
+			touchInteractionStarting="machineListTouchInteractionStarting_Handler(event)">
 		<s:scroller>
 			<s:Scroller id="machineListScroller" />
 		</s:scroller>
