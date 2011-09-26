@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <application xmlns="http://ns.adobe.com/air/application/2.7">
   <id>air.net.zdremann.esuds.esudsandroid</id>
-  <versionNumber>0.2</versionNumber>
+  <versionNumber>1.0</versionNumber>
   <supportedProfiles>mobileDevice</supportedProfiles>
   <filename>esudsandroid</filename>
   <name>ESuds</name>
