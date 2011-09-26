@@ -134,7 +134,7 @@
 			width="100%" height="100%">
 		<s:change>
 			<![CDATA[
-			this.navigator.pushView(MachineView, machineList.selectedItem);
+			this.navigator.pushView(MachineView, data, machineList.selectedItem);
 			]]>
 		</s:change>
 		<s:changing>
