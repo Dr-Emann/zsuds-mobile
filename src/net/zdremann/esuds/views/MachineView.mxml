@@ -46,7 +46,7 @@
 			switch(e.keyCode)
 			{
 			case Keyboard.BACK:
-				navigator.popToFirstView();
+				navigator.popView();
 				break;
 			}
 		}
@@ -168,7 +168,10 @@
 		{
 			event.preventDefault();
 			event.stopImmediatePropagation();
-			prevPos = [ { x:stage.mouseX, y:stage.mouseY, scrollPos:machineList.layout.verticalScrollPosition } ,{ x:stage.mouseX, y:stage.mouseY, scrollPos:machineList.layout.verticalScrollPosition },{ x:stage.mouseX, y:stage.mouseY, scrollPos:machineList.layout.verticalScrollPosition } ];
+			prevPos = [ { x:stage.mouseX, y:stage.mouseY, scrollPos:machineList.layout.verticalScrollPosition },
+			{ x:stage.mouseX, y:stage.mouseY, scrollPos:machineList.layout.verticalScrollPosition },
+			{ x:stage.mouseX, y:stage.mouseY, scrollPos:machineList.layout.verticalScrollPosition },
+			{ x:stage.mouseX, y:stage.mouseY, scrollPos:machineList.layout.verticalScrollPosition }];
 			dragStart = { x:stage.mouseX, y:stage.mouseY, scrollPos:machineList.layout.verticalScrollPosition };
 			this.addEventListener(MouseEvent.MOUSE_MOVE, dragging);
 		}
@@ -190,11 +193,11 @@
 			this.removeEventListener(MouseEvent.MOUSE_UP, endDrag);
 			stage.removeEventListener(Event.MOUSE_LEAVE, endDrag);
 			
-			var unroundedScrollPos:Number = dragStart.y - prevPos[prevPos.length-1].y + dragStart.scrollPos;
+			var unroundedScrollPos:Number = dragStart.y - prevPos[prevPos.length-2].y + dragStart.scrollPos;
 			if (prevPos[0].y - stage.mouseY > 0)
-				unroundedScrollPos += Math.min(10 * (prevPos[0].y - stage.mouseY), this.height);
+				unroundedScrollPos += Math.min(10 * (prevPos[0].y - stage.mouseY), .5* this.height);
 			else
-				unroundedScrollPos += Math.max(10 * (prevPos[0].y - stage.mouseY), -this.height);
+				unroundedScrollPos += Math.max(10 * (prevPos[0].y - stage.mouseY), .5* -this.height);
 			
 			var roundedScrollIndex:Number = Math.round(unroundedScrollPos / this.height);
 			if (roundedScrollIndex > machineListData.length -1)
@@ -202,7 +205,7 @@
 			else if (roundedScrollIndex < 0)
 				roundedScrollIndex = 0;
 				
-			scrollTo(roundedScrollIndex, .7);
+			scrollTo(roundedScrollIndex, .4);
 		}
 		private function onResize(event:Event):void
 		{
