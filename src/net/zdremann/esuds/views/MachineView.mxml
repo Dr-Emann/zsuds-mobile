@@ -17,6 +17,7 @@
 		import flash.system.Capabilities;
 		import mx.collections.ArrayCollection;
 		import mx.core.FlexGlobals;
+		import mx.events.ResizeEvent;
 		import mx.events.TouchInteractionEvent;
 		import mx.managers.PopUpManager;
 		import net.zdremann.esuds.ClothesMachine;
@@ -174,6 +175,10 @@
 			{ x:stage.mouseX, y:stage.mouseY, scrollPos:machineList.layout.verticalScrollPosition }];
 			dragStart = { x:stage.mouseX, y:stage.mouseY, scrollPos:machineList.layout.verticalScrollPosition };
 			this.addEventListener(MouseEvent.MOUSE_MOVE, dragging);
+			
+			this.addEventListener(MouseEvent.MOUSE_UP, endDrag);
+			stage.addEventListener(Event.MOUSE_LEAVE, endDrag);
+			FlexGlobals.topLevelApplication.addEventListener(Event.DEACTIVATE, endDrag);
 		}
 		
 		private function dragging(e:MouseEvent):void 
@@ -192,6 +197,7 @@
 			this.removeEventListener(MouseEvent.MOUSE_MOVE, dragging);
 			this.removeEventListener(MouseEvent.MOUSE_UP, endDrag);
 			stage.removeEventListener(Event.MOUSE_LEAVE, endDrag);
+			FlexGlobals.topLevelApplication.removeEventListener(Event.DEACTIVATE, endDrag);
 			
 			var unroundedScrollPos:Number = dragStart.y - prevPos[prevPos.length-2].y + dragStart.scrollPos;
 			if (prevPos[0].y - stage.mouseY > 0)
@@ -207,9 +213,21 @@
 				
 			scrollTo(roundedScrollIndex, .4);
 		}
-		private function onResize(event:Event):void
+		private function onResize(event:ResizeEvent):void
 		{
+			var proportion:Number = this.width / event.oldHeight;
+			
+			machineListLayout.clearVirtualLayoutCache();
+			machineListLayout.typicalLayoutElement = this.machineList;
+			
 			scrollTo(machineList.selectedIndex);
+			
+			var arrLength:int = prevPos.length;
+			dragStart.scrollPos *= proportion;
+			for (var i:int = 0; i < arrLength; i++)
+			{
+				prevPos[i].scrollPos *= proportion;
+			}
 		}
 		
 		]]>
@@ -218,13 +236,10 @@
 		<!-- Place non-visual elements (e.g., services, value objects) here -->
 	</fx:Declarations>
 	<s:List id="machineList" dataProvider="{machineListData}" itemRenderer="net.zdremann.esuds.CardMachineItemRenderer"
-			width="100%" height="100%" useVirtualLayout="false" typicalItem="{this}"
+			width="100%" height="100%" useVirtualLayout="true"
 			touchInteractionStarting="machineListTouchInteractionStarting_Handler(event)">
-		<s:scroller>
-			<s:Scroller id="machineListScroller" />
-		</s:scroller>
 		<s:layout>
-			<s:VerticalLayout gap="0" paddingTop="0" paddingBottom="0" variableRowHeight="false" rowHeight="{this.height}" requestedRowCount="1" />
+			<s:VerticalLayout id="machineListLayout" gap="0" paddingTop="0" paddingBottom="0" variableRowHeight="false" rowHeight="{this.height}" requestedRowCount="1" />
 		</s:layout>
 	</s:List>
 </s:View>

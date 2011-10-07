@@ -12,8 +12,8 @@ package net.zdremann.esuds
 		public static const CYCLE_COMPLETE:int = 2;
 		public static const UNAVAILABLE:int = 4;
 		
-		public static const WASHER:int = 0;
-		public static const DRYER:int = 1;
+		public static const WASHER:int = 1;
+		public static const DRYER:int = 2;
 		
 		public var id:uint;
 		public var number:int;
@@ -31,21 +31,24 @@ package net.zdremann.esuds
 		}
 		public function toString():String
 		{
-			var sType:String;
-			switch(this.type)
-			{
-			case 0:
-				sType = "Washer";
-				break;
-			case 1:
-				sType = "Dryer";
-				break;
-			default:
-				sType = "UNKNOWN";
-				break;
-			}
+			var sType:String = typeToString(type);
 			var sStatus:String = statusToString(status);
 			return sType + ":{id=" + id + ", number=" + number + ", status=" +sStatus + ", timeRemaining=" + timeRemaining + "}";
+		}
+		public static function typeToString(type:int):String
+		{
+			switch(type)
+			{
+			case DRYER:
+				return "Dryer";
+				break;
+			case WASHER:
+				return "Washer";
+				break;
+			default:
+				return "Unknown Type";
+				break;
+			}
 		}
 		public static function statusToString(status:int):String
 		{
