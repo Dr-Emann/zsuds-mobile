@@ -2,7 +2,8 @@
 <s:ViewNavigatorApplication xmlns:fx="http://ns.adobe.com/mxml/2009"
                             xmlns:s="library://ns.adobe.com/flex/spark"
 							xmlns:views="net.zdremann.esuds.views.*"
-					        firstView="net.zdremann.esuds.views.HomeView" creationComplete="this.persistenceManager.load();" addedToStage="stage.frameRate = 10"
+					        firstView="net.zdremann.esuds.views.HomeView" creationComplete="this.persistenceManager.load();Multitouch.inputMode=MultitouchInputMode.GESTURE;"
+							addedToStage="stage.frameRate = 10"
 							backgroundColor="0x222222" deactivate="stage.frameRate = .1; this.persistenceManager.save();" activate="stage.frameRate = 10"
 							splashScreenImage="@Embed('/../assets/SplashScreen.png')">
 							
@@ -57,6 +58,8 @@
 	</fx:Style>
 	<fx:Script>
 		<![CDATA[
+		import flash.ui.Multitouch;
+		import flash.ui.MultitouchInputMode;
 		import flash.desktop.NativeApplication;
 		import flash.events.Event;
 		import flash.events.KeyboardEvent;

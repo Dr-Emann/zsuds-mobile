@@ -4,7 +4,7 @@
 		xmlns:mx="library://ns.adobe.com/flex/mx"
 		xmlns:esuds="net.zdremann.esuds.*"
 		title="{machineList.selectedItem.type == ClothesMachine.WASHER?'Washer':'Dryer'} {machineList.selectedItem.number}"
-		viewActivate="refresh()" creationComplete="init();" width="100%" height="100%" backgroundColor="0x222222" resize="onResize(event)">
+		viewActivate="refresh()" creationComplete="init();" width="100%" height="100%" backgroundColor="0x222222" resize="onResize(event)" gestureSwipe="swipeHandler(event);">
 	<fx:Script>
 		<![CDATA[
 		import com.greensock.data.TweenLiteVars;
@@ -13,6 +13,7 @@
 		import flash.events.KeyboardEvent;
 		import flash.events.MouseEvent;
 		import flash.events.TouchEvent;
+		import flash.events.TransformGestureEvent;
 		import flash.net.URLVariables;
 		import flash.system.Capabilities;
 		import mx.collections.ArrayCollection;
@@ -212,9 +213,9 @@
 			
 			var unroundedScrollPos:Number = dragStart.y - prevPos[prevPos.length-2].y + dragStart.scrollPos;
 			if (prevPos[0].y - stage.mouseY > 0)
-				unroundedScrollPos += Math.min(10 * (prevPos[0].y - stage.mouseY), .5* this.height);
+				unroundedScrollPos += Math.min(15 * (prevPos[0].y - stage.mouseY), .5* this.height);
 			else
-				unroundedScrollPos += Math.max(10 * (prevPos[0].y - stage.mouseY), .5* -this.height);
+				unroundedScrollPos += Math.max(15 * (prevPos[0].y - stage.mouseY), .5* -this.height);
 			
 			var roundedScrollIndex:Number = Math.round(unroundedScrollPos / this.height);
 			if (roundedScrollIndex > machineListData.length -1)
@@ -239,6 +240,11 @@
 			}
 			
 			callLater(scrollTo,[machineList.selectedIndex]);
+		}
+		private function swipeHandler(event:TransformGestureEvent):void
+		{
+			if (event.offsetX == 1)
+				navigator.popView();
 		}
 		
 		]]>
