@@ -192,8 +192,6 @@ package net.zdremann.esuds
 			this.height = this.owner.height;
 			if (!labelDisplay || !statusDisplay || !timeRemainingDisplay)
 				return;
-				
-			trace(data, unscaledWidth, unscaledHeight);
 			
 			var viewWidth:Number = unscaledWidth - paddingLeft - paddingRight;
 			var viewHeight:Number = unscaledHeight - paddingTop - paddingBottom;

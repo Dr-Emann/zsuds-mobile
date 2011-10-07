@@ -188,6 +188,12 @@
 		
 		private function dragging(e:MouseEvent):void 
 		{
+			if (stage.mouseY<=0 || stage.mouseY>=stage.stageHeight)
+			{
+				endDrag(null);
+				return;
+			}
+			
 			if(Math.abs (dragStart.y - stage.mouseY) > 10)
 				machineList.layout.verticalScrollPosition = dragStart.y - stage.mouseY + dragStart.scrollPos;
 				
@@ -220,7 +226,7 @@
 		}
 		private function onResize(event:ResizeEvent):void
 		{
-			var proportion:Number = this.width / event.oldHeight;
+			var proportion:Number = this.height / event.oldHeight;
 			
 			machineListLayout.clearVirtualLayoutCache();
 			machineListLayout.typicalLayoutElement = this.machineList;
