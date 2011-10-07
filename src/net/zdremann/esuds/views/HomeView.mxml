@@ -131,6 +131,7 @@
 	</s:viewMenuItems>
 	<s:List id="machineList" dataProvider="{machineListData}"
 			itemRenderer="net.zdremann.esuds.ClothesMachineItemRenderer"
+			touchInteractionStart="stage.frameRate=60;" touchInteractionEnd="stage.frameRate=10;"
 			width="100%" height="100%">
 		<s:change>
 			<![CDATA[

@@ -2,7 +2,8 @@
 <s:ViewNavigatorApplication xmlns:fx="http://ns.adobe.com/mxml/2009"
                             xmlns:s="library://ns.adobe.com/flex/spark"
 					        firstView="net.zdremann.esuds.views.HomeView" creationComplete="this.persistenceManager.load();" addedToStage="stage.frameRate = 10"
-							backgroundColor="0x222222" deactivate="stage.frameRate = .1" activate="stage.frameRate = 10">
+							backgroundColor="0x222222" deactivate="stage.frameRate = .1; this.persistenceManager.save();" activate="stage.frameRate = 10"
+							splashScreenImage="@Embed('/../assets/SplashScreen.png')" splashScreenScaleMode="letterbox">
 							
 	<fx:Declarations>
 		<fx:Number id="origStageFrameRate" />

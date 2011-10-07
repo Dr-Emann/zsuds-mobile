@@ -151,7 +151,9 @@
 				(machineList.layout as VerticalLayout).verticalScrollPosition = pos * this.height;
 			}
 			else
-				TweenLite.to(machineList.layout, time, { verticalScrollPosition: pos * this.height } );
+				TweenLite.to(machineList.layout, time, { verticalScrollPosition: pos * this.height,
+					onComplete:function():void { stage.frameRate = 10; },
+					onStart:function():void { stage.frameRate = 60; } } );
 			
 			callLater(function():void { machineList.selectedIndex = pos; } );
 			//this.machineList.layout.me = this.height * index;
@@ -169,6 +171,9 @@
 		{
 			event.preventDefault();
 			event.stopImmediatePropagation();
+			
+			stage.frameRate = 60;
+			
 			prevPos = [ { x:stage.mouseX, y:stage.mouseY, scrollPos:machineList.layout.verticalScrollPosition },
 			{ x:stage.mouseX, y:stage.mouseY, scrollPos:machineList.layout.verticalScrollPosition },
 			{ x:stage.mouseX, y:stage.mouseY, scrollPos:machineList.layout.verticalScrollPosition },

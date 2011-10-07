@@ -41,5 +41,6 @@
 		<s:VerticalLayout horizontalAlign="justify" paddingBottom="20" paddingLeft="20" paddingTop="20" paddingRight="20" />
 	</s:layout>
 	<s:Label text="Choose desired room" styleName="Title"/>
-	<s:List id="roomChooser" labelField="roomName" height="100%" change="FlexGlobals.topLevelApplication.persistenceManager.setProperty('room',roomChooser.selectedItem);navigator.popView();" />
+	<s:List id="roomChooser" labelField="roomName" height="100%" change="FlexGlobals.topLevelApplication.persistenceManager.setProperty('room',roomChooser.selectedItem);navigator.popView();"
+		    touchInteractionStart="stage.frameRate=60;" touchInteractionEnd="stage.frameRate=10;" />
 </s:View>
