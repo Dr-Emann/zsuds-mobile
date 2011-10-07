@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <s:ViewNavigatorApplication xmlns:fx="http://ns.adobe.com/mxml/2009"
                             xmlns:s="library://ns.adobe.com/flex/spark"
-					        firstView="net.zdremann.esuds.views.HomeView" creationComplete="this.persistenceManager.load();"
-							backgroundColor="0x222222">
+					        firstView="net.zdremann.esuds.views.HomeView" creationComplete="this.persistenceManager.load();" addedToStage="stage.frameRate = 10"
+							backgroundColor="0x222222" deactivate="stage.frameRate = .1" activate="stage.frameRate = 10">
 							
 	<fx:Declarations>
+		<fx:Number id="origStageFrameRate" />
 		<!-- Place non-visual elements (e.g., services, value objects) here -->
 	</fx:Declarations>
 	<fx:Style>
@@ -20,6 +21,19 @@
 				skinClass:ClassReference("spark.skins.mobile.BeveledBackButtonSkin");
 			}
 		}
+		
+		global
+		{
+			content-background-color: #222222;
+			backgroundColor: #222222;
+		}
+		
+		s|TextInput
+		{
+			content-background-color: #ffffff;
+			backgroundColor: #ffffff;
+		}
+		
 		.Title
 		{
 			fontSize: 30;
@@ -42,15 +56,15 @@
 		
 		public const rooms:ArrayList = new ArrayList(
 		[{ roomId:1166, roomName:"Belfast Hall" },
-		{ roomId:1040367, roomName:"Building 105" },
-		{ roomId:1040368, roomName:"Building 107" }, 
 		{ roomId:1169, roomName:"Cromwell Hall" },
 		{ roomId:1165, roomName:"Dulaney Hall" },
 		{ roomId:1164, roomName:"Greenspring Hall" },
+		{ roomId:1040367, roomName:"Hering Run" },
 		{ roomId:1163, roomName:"Long Green Hall" },
 		{ roomId:1171, roomName:"Patapsco Hall" },
 		{ roomId:1167, roomName:"Shawan Hall" },
 		{ roomId:1170, roomName:"Susquehanna Hall" },
+		{ roomId:1040368, roomName:"Wakefield Way" },
 		{ roomId:2822, roomName:"Western Run Hall" },
 		{ roomId:1026712, roomName:"Wooded Way" },
 		{ roomId:1168, roomName:"Worthington Hall"}]
