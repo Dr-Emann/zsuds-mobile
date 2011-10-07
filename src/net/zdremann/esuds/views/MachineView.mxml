@@ -221,7 +221,7 @@
 				roundedScrollIndex = machineListData.length -1;
 			else if (roundedScrollIndex < 0)
 				roundedScrollIndex = 0;
-				
+			
 			scrollTo(roundedScrollIndex, .4);
 		}
 		private function onResize(event:ResizeEvent):void
@@ -231,14 +231,14 @@
 			machineListLayout.clearVirtualLayoutCache();
 			machineListLayout.typicalLayoutElement = this.machineList;
 			
-			scrollTo(machineList.selectedIndex);
-			
 			var arrLength:int = prevPos.length;
 			dragStart.scrollPos *= proportion;
 			for (var i:int = 0; i < arrLength; i++)
 			{
 				prevPos[i].scrollPos *= proportion;
 			}
+			
+			callLater(scrollTo,[machineList.selectedIndex]);
 		}
 		
 		]]>
