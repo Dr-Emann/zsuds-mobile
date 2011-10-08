@@ -224,7 +224,7 @@ package net.zdremann.esuds
 				statusDisplay.commitStyles();
 				
 				if (statusDisplay.isTruncated)
-					statusDisplay.text = ClothesMachine.statusToString(status);
+					status = status;
 				
 				statusHeight = getElementPreferredHeight(statusDisplay);
 				//Prefered width could be more than view width, if this is the case, set the width to the max view width
@@ -246,7 +246,7 @@ package net.zdremann.esuds
 				timeRemainingDisplay.commitStyles();
 				
 				if (timeRemainingDisplay.isTruncated)
-					timeRemainingDisplay.text = timeRemaining.toString();
+					timeRemaining = _timeRemaining;
 				
 				//Prefered width could be more than view width, if this is the case, set the width to the max view width
 				timeRemainingWidth = Math.min(getElementPreferredWidth(timeRemainingDisplay), viewWidth);
@@ -337,10 +337,9 @@ package net.zdremann.esuds
 			if (statusDisplay && timeRemainingDisplay)
 			{
 				if (statusDisplay.isTruncated)
-					statusDisplay.text = ClothesMachine.statusToString(status);
+					status = _status;
 				if (timeRemainingDisplay.isTruncated)
-					timeRemainingDisplay.text =
-						(timeRemaining < 1)?"":timeRemaining.toString()+ " Min";
+					timeRemaining = _timeRemaining;
 				
 				var horizontalPadding:Number = paddingLeft + paddingRight;
 				var verticalPadding:Number = paddingTop + paddingBottom + paddingInner *2;
