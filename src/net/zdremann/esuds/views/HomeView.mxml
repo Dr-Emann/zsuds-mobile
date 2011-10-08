@@ -26,7 +26,8 @@
 		
 		private function init():void
 		{
-			this.data = [ { header:true, label:"No Data Found" } ];
+			if(!this.data)
+				this.data = [ { header:true, label:"No Data Found" } ];
 			this.machineListData = new ArrayList(this.data as Array);
 			if (!FlexGlobals.topLevelApplication.persistenceManager.getProperty("room"))
 			{
@@ -40,10 +41,15 @@
 			switch(e.keyCode)
 			{
 			case Keyboard.BACK:
-				FlexGlobals.topLevelApplication.persistenceManager.save();
-				NativeApplication.nativeApplication.exit();
+				back();
 				break;
 			}
+		}
+		
+		public function back():void
+		{
+			FlexGlobals.topLevelApplication.persistenceManager.save();
+			NativeApplication.nativeApplication.exit();
 		}
 		
 		public function refresh():void
@@ -54,6 +60,7 @@
 		}
 		private function loaderCompleate_Handler(e:flash.events.Event):void
 		{
+			var prevScrollPos:Number = machineList.dataGroup.verticalScrollPosition;
 			var txt:String = e.target.data;
 			var reg:RegExp = new RegExp("xmlns=\".*\"");
 			txt = txt.replace(reg, "");
@@ -116,9 +123,10 @@
 			// Combine lists, and add Headers
 			var a:Array = washers.concat({header:true, label:"Dryers"}, dryers);
 			a.unshift( { header:true, label:"Washers" } );
-			FlexGlobals.topLevelApplication.persistenceManager.setProperty("machineListData", a);
 			this.data = a;
 			this.machineListData = new ArrayList(a);
+			
+			callLater(function ():void { machineList.dataGroup.verticalScrollPosition = prevScrollPos; } );
 		}
 		
 		]]>

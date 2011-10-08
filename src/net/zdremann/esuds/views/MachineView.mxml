@@ -4,7 +4,7 @@
 		xmlns:mx="library://ns.adobe.com/flex/mx"
 		xmlns:esuds="net.zdremann.esuds.*"
 		title="{machineList.selectedItem.type == ClothesMachine.WASHER?'Washer':'Dryer'} {machineList.selectedItem.number}"
-		viewActivate="refresh()" creationComplete="init();" width="100%" height="100%" backgroundColor="0x222222" resize="onResize(event)" gestureSwipe="swipeHandler(event);">
+		creationComplete="init();" width="100%" height="100%" backgroundColor="0x222222" resize="onResize(event)" gestureSwipe="swipeHandler(event);" deactivate="onDeactivate();">
 	<fx:Script>
 		<![CDATA[
 		import com.greensock.data.TweenLiteVars;
@@ -28,7 +28,6 @@
 		import spark.managers.PersistenceManager;
 		import spark.transitions.SlideViewTransition;
 		
-		
 		public var xml:XML;
 		
 		private var dragStart:Object = { x:0, y:0, scrollPos:0 };
@@ -41,6 +40,25 @@
 			//machineList.addEventListener(MouseEvent.MOUSE_UP, machineListTouchInteractionEnd_Handler);
 			if(Capabilities.version.indexOf("AND")==0)
 				this.addEventListener(KeyboardEvent.KEY_DOWN, onKeyDown_Handler);
+			
+			var arrLength:int = machineListData.length;
+			
+			if (navigator.context && navigator.context.hasOwnProperty("number"))
+			{
+				var curMachineNum:int = navigator.context.number;
+				for (var i:int = 0; i < arrLength; i ++)
+				{
+					if (machineListData.getItemAt(i).hasOwnProperty("number") && machineListData.getItemAt(i).number == curMachineNum)
+					{
+						callLater(scrollTo, [i,0]);
+						//machineList.scroller.viewport.verticalScrollPosition 
+					}
+				}
+			}
+			else
+			{
+				callLater(scrollTo, [0, 0]);
+			}
 		}
 		
 		private function onKeyDown_Handler(e:KeyboardEvent):void 
@@ -48,9 +66,24 @@
 			switch(e.keyCode)
 			{
 			case Keyboard.BACK:
-				navigator.popView();
+				back();
 				break;
 			}
+		}
+		
+		public function back():void
+		{
+			navigator.popView();
+		}
+		
+		public function onDeactivate():void
+		{
+			this.addEventListener(Event.ACTIVATE, onReActivate, false, 0, true);
+		}
+		private function onReActivate():void
+		{
+			this.removeEventListener(Event.ACTIVATE, onReActivate);
+			refresh();
 		}
 		
 		public function refresh():void
@@ -61,6 +94,8 @@
 		}
 		private function loaderCompleate_Handler(e:Event):void
 		{
+			var scrollToIndex:int = machineList.selectedIndex;
+			
 			var txt:String = e.target.data;
 			var reg:RegExp = new RegExp("xmlns=\".*\"");
 			txt = txt.replace(reg, "");
@@ -123,26 +158,17 @@
 			// Combine lists, and add Headers
 			var a:Array = washers.concat({header:true, label:"Dryers"}, dryers);
 			a.unshift( { header:true, label:"Washers" } );
-			FlexGlobals.topLevelApplication.persistenceManager.setProperty("machineListData", a);
 			this.data = a;
-			this.machineListData = new ArrayCollection(a);
+			
+			callLater(this.scrollTo, [scrollToIndex, 0]);
+		}
+		
+		override public function set data(value:Object):void 
+		{
+			super.data = value;
+			this.machineListData = new ArrayCollection(value as Array);
 			this.machineListData.filterFunction = removeHeaders_Filter;
 			this.machineListData.refresh();
-			
-			var arrLength:int = machineListData.length;
-			
-			if (navigator.context && navigator.context.hasOwnProperty("number"))
-			{
-				var curMachineNum:int = navigator.context.number;
-				for (var i:int = 0; i < arrLength; i ++)
-				{
-					if (machineListData.getItemAt(i).hasOwnProperty("number") && machineListData.getItemAt(i).number == curMachineNum)
-					{
-						callLater(scrollTo, [i,0]);
-						//machineList.scroller.viewport.verticalScrollPosition 
-					}
-				}
-			}
 		}
 		
 		private function scrollTo(pos:int, time:Number = 0):void
@@ -172,6 +198,8 @@
 		{
 			event.preventDefault();
 			event.stopImmediatePropagation();
+			
+			machineList.mouseChildren = false;
 			
 			stage.frameRate = 60;
 			
@@ -206,6 +234,8 @@
 		
 		private function endDrag(e:Event):void 
 		{
+			machineList.mouseChildren = true;
+			
 			this.removeEventListener(MouseEvent.MOUSE_MOVE, dragging);
 			this.removeEventListener(MouseEvent.MOUSE_UP, endDrag);
 			stage.removeEventListener(Event.MOUSE_LEAVE, endDrag);

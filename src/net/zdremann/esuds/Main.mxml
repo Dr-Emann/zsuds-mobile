@@ -90,7 +90,7 @@
 				  visible="{navigator.length>1?Capabilities.version.indexOf('AND')!=0:false}" styleName="backButton">
 			<s:click>
 				<![CDATA[
-				navigator.popView();
+				Object(navigator.activeView).back();
 				this.persistenceManager.load();
 				]]>
 			</s:click>
