@@ -5,12 +5,26 @@
 	<fx:Script>
 		<![CDATA[
 		import mx.collections.ArrayList;
+		import mx.collections.IList;
 		import mx.core.FlexGlobals;
+		import spark.managers.PersistenceManager;
 		private function init():void
 		{
 			roomChooser.dataProvider = FlexGlobals.topLevelApplication.rooms;
 			if (FlexGlobals.topLevelApplication.persistenceManager.getProperty("room"))
-				roomChooser.selectedItem = FlexGlobals.topLevelApplication.persistenceManager.getProperty("room");
+			{
+				if (!(roomChooser.dataProvider is IList))
+					return;
+				for (var i:int = 0; i < roomChooser.dataProvider.length; i++)
+				{
+					if (roomChooser.dataProvider.getItemAt(i).roomId == FlexGlobals.topLevelApplication.persistenceManager.getProperty("room"))
+					{
+						roomChooser.selectedIndex = i;
+						break;
+					}
+					
+				}
+			}
 			this.addEventListener(KeyboardEvent.KEY_DOWN, onKeyDown_Handler);
 		}
 		
@@ -19,9 +33,21 @@
 			switch(e.keyCode)
 			{
 			case Keyboard.BACK:
-				navigator.popView();
+				back();
 				break;
 			}
+		}
+		
+		public function back():void
+		{
+			FlexGlobals.topLevelApplication.persistenceManager.save();
+			FlexGlobals.topLevelApplication.persistenceManager.load();
+			
+			// If no room is chosen, and user tries to go back, exit the app
+			if ((FlexGlobals.topLevelApplication.persistenceManager as PersistenceManager).getProperty("room"))
+				NativeApplication.nativeApplication.exit();
+			else
+				navigator.popView();
 		}
 		
 		public function refresh():void
