@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <s:View xmlns:fx="http://ns.adobe.com/mxml/2009" 
         xmlns:s="library://ns.adobe.com/flex/spark"
-		title="Washers and Dryers" creationComplete="init();" viewActivate="refresh()" width="100%" height="100%" backgroundColor="0x222222" opaqueBackground="true">
+		title="Washers and Dryers" creationComplete="init();" viewActivate="onViewActivate()" width="100%" height="100%" opaqueBackground="true">
 	<fx:Script>
 		<![CDATA[
 		import flash.desktop.NativeApplication;
@@ -13,6 +13,7 @@
 		import flash.ui.Keyboard;
 		import mx.collections.ArrayList;
 		import mx.core.FlexGlobals;
+		import mx.events.FlexEvent;
 		import net.zdremann.esuds.ClothesMachine;
 		import net.zdremann.esuds.ClothesMachineItemRenderer;
 		import net.zdremann.esuds.views.HomeSettingsView;
@@ -34,6 +35,17 @@
 				navigator.pushView(HomeSettingsView);
 			}
 			this.addEventListener(KeyboardEvent.KEY_DOWN, onKeyDown_Handler);
+		}
+		
+		public function onViewActivate():void
+		{
+			if (navigator.poppedViewReturnedObject is Array)
+			{
+				this.data = navigator.poppedViewReturnedObject;
+				this.machineListData = new ArrayList(this.data as Array);
+			}
+			else 
+				refresh();
 		}
 		
 		protected function onKeyDown_Handler(e:KeyboardEvent):void 

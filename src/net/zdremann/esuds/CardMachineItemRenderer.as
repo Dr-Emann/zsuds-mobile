@@ -1,5 +1,6 @@
 package net.zdremann.esuds 
 {
+	import flash.display.DisplayObjectContainer;
 	import flash.display.GradientType;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
@@ -8,12 +9,17 @@ package net.zdremann.esuds
 	import flash.net.URLRequest;
 	import flash.net.URLVariables;
 	import mx.core.FlexGlobals;
+	import mx.events.ResizeEvent;
+	import mx.managers.PopUpManager;
 	import mx.validators.EmailValidator;
 	import spark.components.Button;
 	import spark.components.LabelItemRenderer;
+	import spark.components.SkinnablePopUpContainer;
 	import spark.components.supportClasses.StyleableTextField;
 	import spark.components.TextInput;
-	
+	import net.zdremann.esuds.NotifyConformation;
+	import spark.events.PopUpEvent;
+	import net.zdremann.esuds.ErrorPopup;
 	/**
 	 * ...
 	 * @author Zachary Dremann
@@ -77,9 +83,23 @@ package net.zdremann.esuds
 		{
 			super();
 			
+			this.addEventListener(ResizeEvent.RESIZE, onResize);
+			
 			this.cacheAsBitmap = true;
 			
 			this.minHeight = 0;
+			
+			this.emailValidator.requiredFieldError = "Cannot notify an empty email address";
+		}
+		
+		private function onResize(e:ResizeEvent):void 
+		{
+			if (this.currentPopup)
+			{
+				this.currentPopup.maxWidth = stage.stageWidth;
+				this.currentPopup.maxHeight = stage.stageHeight;
+				PopUpManager.centerPopUp(this.currentPopup);
+			}
 		}
 		
 		public const paddingTop:Number		= 60;
@@ -135,6 +155,7 @@ package net.zdremann.esuds
 			addChild(notifTextDisplay);
 			
 			notifEmailInput = new TextInput();
+			notifEmailInput.prompt = "Enter your email";
 			notifEmailInput.text = FlexGlobals.topLevelApplication.persistenceManager.getProperty("emailOrPhone");
 			addChild(notifEmailInput);
 			
@@ -142,8 +163,6 @@ package net.zdremann.esuds
 			notifSubmitBtn.label = "Notify Me";
 			notifSubmitBtn.cacheAsBitmap = true;
 			addChild(notifSubmitBtn);
-			
-			notifEmailInput.restrict = "A-Z.a-z@";
 			
 			labelDisplay.setStyle("fontSize", 30);
 			labelDisplay.setStyle("fontWeight", "bold");
@@ -159,10 +178,40 @@ package net.zdremann.esuds
 			emailValidator.required = true;
 		}
 		
+		private var currentPopup:SkinnablePopUpContainer;
+		
 		private function notifSubitBtnClick_Handler(e:MouseEvent):void 
 		{
 			emailValidator.validate();
 			if (!notifEmailInput.errorString)
+			{
+				var notifyConfirm:NotifyConformation = new NotifyConformation();
+				notifyConfirm.message = "Are you sure you want to be notified?";
+				notifyConfirm.addEventListener(PopUpEvent.CLOSE, notifyConfirmClose_Handler, false, 0, true);
+				notifyConfirm.open(this.owner, true);
+				PopUpManager.centerPopUp(notifyConfirm);
+				currentPopup = notifyConfirm;
+			}
+			else
+			{
+				var errorPopup:ErrorPopup = new ErrorPopup();
+				errorPopup.errorMessage = notifEmailInput.errorString;
+				errorPopup.addEventListener(PopUpEvent.CLOSE, errorPopupClose_Handler, false, 0, true);
+				errorPopup.open(this.owner, true);
+				currentPopup = errorPopup;
+				PopUpManager.centerPopUp(errorPopup);
+			}
+		}
+		
+		private function errorPopupClose_Handler(e:PopUpEvent):void 
+		{
+			currentPopup = null;
+		}
+		
+		private function notifyConfirmClose_Handler(e:PopUpEvent):void 
+		{
+			currentPopup = null;
+			if (e.commit)
 			{
 				FlexGlobals.topLevelApplication.persistenceManager.setProperty("emailOrPhone", notifEmailInput.text);
 				var vars:URLVariables = new URLVariables();
@@ -180,9 +229,31 @@ package net.zdremann.esuds
 		private function postloaderCompleate_Handler(event:Event):void
 		{
 			var data:String = event.target.data;
-			if (data.indexOf("errors") != -1)
+			var errorPopup:ErrorPopup = new ErrorPopup();
+			errorPopup.errorMessage = "";
+			if ( data.indexOf("Errors") != -1)
 			{
-				trace("there was an error");
+				var knownError:Boolean = false;
+				if (data.indexOf("The email address is not valid.") != -1)
+				{
+					errorPopup.errorMessage = "The email address is not valid\n";
+					knownError = true;
+				}
+				if (data.indexOf("is not in use") != -1)
+				{
+					errorPopup.errorMessage = "Selected machine is already in use\n";
+					knownError = true;
+				}
+				if (!knownError)
+				{
+					errorPopup.errorMessage = "An unknown error occured";
+				}
+				
+				errorPopup.maxWidth = stage.stageWidth;
+				errorPopup.maxHeight = stage.stageHeight;
+				this.currentPopup = errorPopup;
+				errorPopup.open(this.owner, true);
+				PopUpManager.centerPopUp(errorPopup);
 			}
 		}
 		
@@ -355,12 +426,7 @@ package net.zdremann.esuds
 		
 		override protected function drawBackground(unscaledWidth:Number, unscaledHeight:Number):void
 		{
-			//super.drawBackground(unscaledWidth, unscaledHeight);
-			graphics.beginFill(0x222222);
-			graphics.drawRect(0, 0, unscaledWidth, unscaledHeight);
-			graphics.endFill();
-			
-			var backgroundColors:Array = [0xffffff, 0xffffff];
+			var backgroundColors:Array;
 			
 			if(status == ClothesMachine.IN_USE)
 				backgroundColors = [scaleColor(0xcc2525), 0xcc2525];

@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <s:View xmlns:fx="http://ns.adobe.com/mxml/2009" 
         xmlns:s="library://ns.adobe.com/flex/spark"
-		xmlns:mx="library://ns.adobe.com/flex/mx"
 		xmlns:esuds="net.zdremann.esuds.*"
 		title="{machineList.selectedItem.type == ClothesMachine.WASHER?'Washer':'Dryer'} {machineList.selectedItem.number}"
-		creationComplete="init();" width="100%" height="100%" backgroundColor="0x222222" resize="onResize(event)" gestureSwipe="swipeHandler(event);" deactivate="onDeactivate();">
+		creationComplete="init();" width="100%" height="100%" resize="onResize(event)" gestureSwipe="swipeHandler(event);" deactivate="onDeactivate();">
 	<fx:Script>
 		<![CDATA[
 		import com.greensock.data.TweenLiteVars;
@@ -32,6 +31,11 @@
 		
 		private var dragStart:Object = { x:0, y:0, scrollPos:0 };
 		private var prevPos:Array = [{ x:0, y:0, scrollPos:0 }];
+		
+		override public function createReturnObject():Object 
+		{
+			return this.data;
+		}
 		
 		[Bindable]
 		public var machineListData:ArrayCollection = new ArrayCollection();
@@ -80,7 +84,7 @@
 		{
 			this.addEventListener(Event.ACTIVATE, onReActivate, false, 0, true);
 		}
-		private function onReActivate():void
+		private function onReActivate(event:Event = null):void
 		{
 			this.removeEventListener(Event.ACTIVATE, onReActivate);
 			refresh();
