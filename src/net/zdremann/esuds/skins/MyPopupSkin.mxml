@@ -37,14 +37,14 @@
        
         <s:Transition fromState="normal" toState="closed" autoReverse="false">
 			<s:Parallel duration="150" target="{chrome}">
-				<s:Fade effectUpdate="PopUpManager.centerPopUp(this.owner as IFlexDisplayObject);" />
+				<s:Fade effectUpdate="PopUpManager.centerPopUp(this.owner as IFlexDisplayObject);" effectStart="stage.frameRate = 60" effectEnd="stage.frameRate = 10" />
 				<s:Scale scaleYFrom="1" scaleXFrom="1" scaleYTo=".2" scaleXTo=".2" autoCenterTransform="true" />
 			</s:Parallel>
         </s:Transition>
  
         <s:Transition fromState="disabled" toState="disabledAndClosed" autoReverse="false">
 			<s:Parallel duration="150" target="{chrome}">
-				<s:Fade effectUpdate="PopUpManager.centerPopUp(this.owner as IFlexDisplayObject);" />
+				<s:Fade effectUpdate="PopUpManager.centerPopUp(this.owner as IFlexDisplayObject);" effectStart="stage.frameRate = 60" effectEnd="stage.frameRate = 10" />
 				<s:Scale scaleYFrom="1" scaleXFrom="1" scaleYTo=".2" scaleXTo=".2" autoCenterTransform="true" />
 			</s:Parallel>
         </s:Transition>
@@ -53,9 +53,9 @@
     <!--Defines the background and content group used by this skin. -->
     <s:Group id="chrome" left="15" right="15" top="15" bottom="15" visible.closedGroup="false">
 		<s:Rect left="0" right="0" top="1" bottom="0" id="background" radiusX="40" radiusY="40">
-			<s:filters>
+			<s:filters.normal>
 				<s:DropShadowFilter color="0x000000" blurX="20" blurY="20" />
-			</s:filters>
+			</s:filters.normal>
 			<s:fill>
 				<s:SolidColor color="0xF9F1D3"/>
 			</s:fill>
