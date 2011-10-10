@@ -235,11 +235,11 @@ package net.zdremann.esuds
 			{
 				var formater:PhoneFormatter = new PhoneFormatter();
 				formater.areaCode = -1;
-				notifEmailInput.text = formater.format(notifEmailInput.text);
-				formater.formatString = "##########";
-				formater.areaCodeFormat = "###";
+				var numText:String = (notifEmailInput.text as String).replace("-", "").replace("(", "").replace(")", "").replace(" ","");
+				notifEmailInput.text = formater.format(numText);
 				FlexGlobals.topLevelApplication.persistenceManager.setProperty("emailOrPhone", notifEmailInput.text);
-				var email:String = (e.data.email as String).replace("[num]", formater.format(notifEmailInput.text));
+				var email:String = (e.data.email as String).replace("[num]", numText);
+				trace(email);
 				requestNotification(email);
 			}
 		}

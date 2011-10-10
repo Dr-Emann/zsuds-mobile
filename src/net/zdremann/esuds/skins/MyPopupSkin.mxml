@@ -13,7 +13,6 @@
     </fx:Metadata>
 	<fx:Script>
 		<![CDATA[
-		
 		import mx.core.IFlexDisplayObject;
 		import mx.managers.PopUpManager;
 		]]>

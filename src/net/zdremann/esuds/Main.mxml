@@ -56,13 +56,13 @@
 	</fx:Style>
 	<fx:Script>
 		<![CDATA[
-		import flash.ui.Multitouch;
-		import flash.ui.MultitouchInputMode;
 		import flash.desktop.NativeApplication;
 		import flash.events.Event;
 		import flash.events.KeyboardEvent;
 		import flash.system.Capabilities;
 		import flash.ui.Keyboard;
+		import flash.ui.Multitouch;
+		import flash.ui.MultitouchInputMode;
 		import mx.collections.ArrayList;
 		import spark.managers.PersistenceManager;
 		
