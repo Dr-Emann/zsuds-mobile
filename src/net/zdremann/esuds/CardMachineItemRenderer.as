@@ -10,8 +10,11 @@ package net.zdremann.esuds
 	import flash.net.URLVariables;
 	import mx.core.FlexGlobals;
 	import mx.events.ResizeEvent;
+	import mx.events.ValidationResultEvent;
+	import mx.formatters.PhoneFormatter;
 	import mx.managers.PopUpManager;
 	import mx.validators.EmailValidator;
+	import mx.validators.PhoneNumberValidator;
 	import spark.components.Button;
 	import spark.components.LabelItemRenderer;
 	import spark.components.SkinnablePopUpContainer;
@@ -20,6 +23,7 @@ package net.zdremann.esuds
 	import net.zdremann.esuds.NotifyConformation;
 	import spark.events.PopUpEvent;
 	import net.zdremann.esuds.ErrorPopup;
+	import net.zdremann.esuds.PhoneChooserPopup;
 	/**
 	 * ...
 	 * @author Zachary Dremann
@@ -78,6 +82,7 @@ package net.zdremann.esuds
 		protected var notifSubmitBtn:Button;
 		
 		protected var emailValidator:EmailValidator = new EmailValidator();
+		protected var phoneValidator:PhoneNumberValidator = new PhoneNumberValidator();
 		
 		public function CardMachineItemRenderer() 
 		{
@@ -96,8 +101,8 @@ package net.zdremann.esuds
 		{
 			if (this.currentPopup)
 			{
-				this.currentPopup.maxWidth = stage.stageWidth;
-				this.currentPopup.maxHeight = stage.stageHeight;
+				this.currentPopup.maxWidth = this.width;
+				this.currentPopup.maxHeight = this.height;
 				PopUpManager.centerPopUp(this.currentPopup);
 			}
 		}
@@ -155,7 +160,7 @@ package net.zdremann.esuds
 			addChild(notifTextDisplay);
 			
 			notifEmailInput = new TextInput();
-			notifEmailInput.prompt = "Enter your email";
+			notifEmailInput.prompt = "Enter email or phone number";
 			notifEmailInput.text = FlexGlobals.topLevelApplication.persistenceManager.getProperty("emailOrPhone");
 			addChild(notifEmailInput);
 			
@@ -176,6 +181,10 @@ package net.zdremann.esuds
 			emailValidator.source = notifEmailInput;
 			emailValidator.property = "text";
 			emailValidator.required = true;
+			
+			phoneValidator.source = notifEmailInput;
+			phoneValidator.property = "text";
+			emailValidator.required = true;
 		}
 		
 		private var currentPopup:SkinnablePopUpContainer;
@@ -188,6 +197,8 @@ package net.zdremann.esuds
 				var notifyConfirm:NotifyConformation = new NotifyConformation();
 				notifyConfirm.message = "Are you sure you want to be notified?";
 				notifyConfirm.addEventListener(PopUpEvent.CLOSE, notifyConfirmClose_Handler, false, 0, true);
+				notifyConfirm.maxWidth = this.width;
+				notifyConfirm.maxHeight = this.height;
 				notifyConfirm.open(this.owner, true);
 				PopUpManager.centerPopUp(notifyConfirm);
 				currentPopup = notifyConfirm;
@@ -196,10 +207,40 @@ package net.zdremann.esuds
 			{
 				var errorPopup:ErrorPopup = new ErrorPopup();
 				errorPopup.errorMessage = notifEmailInput.errorString;
-				errorPopup.addEventListener(PopUpEvent.CLOSE, errorPopupClose_Handler, false, 0, true);
+				if (phoneValidator.validate().type == ValidationResultEvent.VALID)
+				{
+					errorPopup = null;
+					var phoneChoser:PhoneChooserPopup = new PhoneChooserPopup();
+					phoneChoser.addEventListener(PopUpEvent.CLOSE, phoneChoserClose_Handler);
+					phoneChoser.maxWidth = this.width;
+					phoneChoser.maxHeight = this.height;
+					phoneChoser.open(this.owner, true);
+					PopUpManager.centerPopUp(phoneChoser);
+					currentPopup = phoneChoser;
+					return;
+				}
+				errorPopup.addEventListener(PopUpEvent.CLOSE, errorPopupClose_Handler, false, 0, true); 
+				errorPopup.maxWidth = this.width;
+				errorPopup.maxHeight = this.height;
 				errorPopup.open(this.owner, true);
 				currentPopup = errorPopup;
 				PopUpManager.centerPopUp(errorPopup);
+			}
+		}
+		
+		private function phoneChoserClose_Handler(e:PopUpEvent):void 
+		{
+			currentPopup = null;
+			if (e.commit)
+			{
+				var formater:PhoneFormatter = new PhoneFormatter();
+				formater.areaCode = -1;
+				notifEmailInput.text = formater.format(notifEmailInput.text);
+				formater.formatString = "##########";
+				formater.areaCodeFormat = "###";
+				FlexGlobals.topLevelApplication.persistenceManager.setProperty("emailOrPhone", notifEmailInput.text);
+				var email:String = (e.data.email as String).replace("[num]", formater.format(notifEmailInput.text));
+				requestNotification(email);
 			}
 		}
 		
@@ -208,22 +249,30 @@ package net.zdremann.esuds
 			currentPopup = null;
 		}
 		
+		private function requestNotification(email:String, selectedMachine:uint = 0):void
+		{
+			if (!selectedMachine)
+				selectedMachine = data.id;
+			
+			var vars:URLVariables = new URLVariables();
+			var req:URLRequest = new URLRequest("http://stevenson.esuds.net/RoomStatus/requestNotification.do");
+			vars.roomId = FlexGlobals.topLevelApplication.persistenceManager.getProperty('room').roomId;
+			vars.emailAddress = email;
+			vars.selectedMachines = selectedMachine;
+			req.data = vars;
+			req.method = "POST";
+			var loader:URLLoader = new URLLoader();
+			loader.addEventListener(Event.COMPLETE, postloaderCompleate_Handler);
+			loader.load(req);
+		}
+		
 		private function notifyConfirmClose_Handler(e:PopUpEvent):void 
 		{
 			currentPopup = null;
 			if (e.commit)
 			{
 				FlexGlobals.topLevelApplication.persistenceManager.setProperty("emailOrPhone", notifEmailInput.text);
-				var vars:URLVariables = new URLVariables();
-				var req:URLRequest = new URLRequest("http://stevenson.esuds.net/RoomStatus/requestNotification.do");
-				vars.roomId = FlexGlobals.topLevelApplication.persistenceManager.getProperty('room').roomId;
-				vars.emailAddress = notifEmailInput.text;
-				vars.selectedMachines = data.id;
-				req.data = vars;
-				req.method = "POST";
-				var loader:URLLoader = new URLLoader();
-				loader.addEventListener(Event.COMPLETE, postloaderCompleate_Handler);
-				loader.load(req);
+				requestNotification(notifEmailInput.text);
 			}
 		}
 		private function postloaderCompleate_Handler(event:Event):void
@@ -249,8 +298,8 @@ package net.zdremann.esuds
 					errorPopup.errorMessage = "An unknown error occured";
 				}
 				
-				errorPopup.maxWidth = stage.stageWidth;
-				errorPopup.maxHeight = stage.stageHeight;
+				errorPopup.maxWidth = this.width;
+				errorPopup.maxHeight = this.height;
 				this.currentPopup = errorPopup;
 				errorPopup.open(this.owner, true);
 				PopUpManager.centerPopUp(errorPopup);

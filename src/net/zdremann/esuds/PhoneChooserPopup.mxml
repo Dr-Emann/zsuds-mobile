@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:SkinnablePopUpContainer xmlns:fx="http://ns.adobe.com/mxml/2009"    
+						   xmlns:mx="library://ns.adobe.com/flex/mx"
+						   xmlns:s="library://ns.adobe.com/flex/spark"
+						   skinClass="net.zdremann.esuds.skins.MyPopupSkin">
+	<s:layout>
+		<s:VerticalLayout gap="20"
+						  paddingBottom="10"
+						  paddingLeft="30"
+						  paddingRight="30"
+						  paddingTop="30"
+						  horizontalAlign="center" />
+	</s:layout>
+	<fx:Style>
+		@namespace mx "library://ns.adobe.com/flex/mx";
+		@namespace s "library://ns.adobe.com/flex/spark";
+		s|List *
+		{
+			content-background-color:#F9F1D3;
+			backgroundColor: #F9F1D3
+		}
+	</fx:Style>
+	<fx:Script>
+		<![CDATA[
+import mx.collections.ArrayList;
+			private var _message:String;
+			
+			private const phones:ArrayList = new ArrayList(
+			[
+				{label:"Alltel", email:"[num]@message.alltel.com" },
+				{label:"AT&T", email:"[num]@txt.att.net" },
+				{label:"Boost Mobile", email:"[num]@myboostmobile.com" },
+				{label:"Nexel", email:"[num]@messaging.nextel.com" },
+				{label:"Sprint", email:"[num]@messaging.sprintpcs.com" },
+				{label:"T-Mobile", email:"[num]@tmomail.net" },
+				{label:"US Cellular", email:"[num]email.uscc.net" },
+				{label:"Verison", email:"[num]@vtext.com" },
+				{label:"Virgin Mobile USA", email:"[num]@vmobl.com" }
+			]);
+			
+			private function onClick(commit:Boolean):void
+			{
+				super.close(commit, chooserList.selectedItem);
+			}
+		]]>
+	</fx:Script>
+	<s:RichText styleName="Title" text="Enter your cell service provider" width="100%" />
+	<s:List id="chooserList" dataProvider="{phones}" width="100%" height="100%" />
+	<s:HGroup width="100%">
+		<s:Button label="Confirm" width="50%" click="onClick(true)" />
+		<s:Button label="Cancel"  width="50%" click="onClick(false)" />
+	</s:HGroup>
+
+</s:SkinnablePopUpContainer>

@@ -48,8 +48,6 @@
 		{
 			fontSize: 30;
 			fontWeight: bold;
-			content-background-color: #ffffff;
-			backgroundColor: #ffffff;
 		}
 		.SubTitle
 		{
