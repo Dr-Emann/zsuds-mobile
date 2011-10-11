@@ -17,7 +17,7 @@
 		s|List *
 		{
 			content-background-color:#F9F1D3;
-			backgroundColor: #F9F1D3
+			backgroundColor: #F9F1D3;
 		}
 	</fx:Style>
 	<fx:Script>

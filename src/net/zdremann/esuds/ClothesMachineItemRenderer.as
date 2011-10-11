@@ -55,6 +55,7 @@ package net.zdremann.esuds
 		{
 			super();
 			//Set Styles
+			this.percentWidth = 100;
 			
 			this.minHeight = 0;
 		}
@@ -93,7 +94,7 @@ package net.zdremann.esuds
 				isHeading = false;
 				this.status = status;
 				this.timeRemaining = timeRemaining;
-				labelDisplay.setStyle("color", "0x000000");
+				labelDisplay.setStyle("color", 0xffffff);
 				labelDisplay.setStyle("fontSize", 25);
 				label = number.toString();
 			}
@@ -128,6 +129,10 @@ package net.zdremann.esuds
 			statusDisplay.setStyle("fontSize", 20);
 			timeRemainingDisplay.setStyle("textAlign", "right");
 			timeRemainingDisplay.setStyle("fontSize", 20);
+			
+			labelDisplay.setStyle("color", 0xffffff);
+			statusDisplay.setStyle("color", 0xffffff);
+			timeRemainingDisplay.setStyle("color", 0xffffff);
 			
 		}
 		override protected function layoutContents(unscaledWidth:Number, unscaledHeight:Number):void 
@@ -275,44 +280,47 @@ package net.zdremann.esuds
 			{
 				if (down)
 				{
-					
 					if (status == ClothesMachine.CYCLE_COMPLETE)
-						backgroundColors = [scaleColor(0x9C2800), 0x9C2800];
+						backgroundColors = makeColors(0x9C2800);
 					else if (status == ClothesMachine.AVAILABLE)
-						backgroundColors = [scaleColor(0x04650c), 0x04650c];
+						backgroundColors = makeColors(0x04650c);
 					else if(status == ClothesMachine.IN_USE)
-						backgroundColors = [scaleColor(0xac0505), 0xac0505];
+						backgroundColors = makeColors(0xac0505);
 					else// if (status == ClothesMachine.UNAVAILABLE)
-						backgroundColors = [scaleColor(0x444444), 0x444444];
+						backgroundColors = makeColors(0x444444);
 				}
 				else if (selected)
 				{
 					if(status == ClothesMachine.IN_USE)
-						backgroundColors = [scaleColor(0x8c0505), 0x8c0505];
+						backgroundColors = makeColors(0x8c0505);
 					else if (status == ClothesMachine.CYCLE_COMPLETE)
-						backgroundColors = [scaleColor(0x7C0800), 0x7C0800];
+						backgroundColors = makeColors(0x7C0800);
 					else if (status == ClothesMachine.AVAILABLE)
-						backgroundColors = [scaleColor(0x044500), 0x044500];
+						backgroundColors = makeColors(0x044500);
 					else// if (status == ClothesMachine.UNAVAILABLE)
-						backgroundColors = [scaleColor(0x333333), 0x333333];
+						backgroundColors = makeColors(0x333333);
 				}
 				else
 				{
 					if(status == ClothesMachine.IN_USE)
-						backgroundColors = [scaleColor(0xcc2525), 0xcc2525];
+						backgroundColors = makeColors(0xcc2525);
 					else if (status == ClothesMachine.CYCLE_COMPLETE)
-						backgroundColors = [scaleColor(0xbC480A), 0xbC480A];
+						backgroundColors = makeColors(0xbC480A);
 					else if (status == ClothesMachine.AVAILABLE)
-						backgroundColors = [scaleColor(0x24850c), 0x24850c];
+						backgroundColors = makeColors(0x24850c);
 					else// if (status == ClothesMachine.UNAVAILABLE)
-						backgroundColors = [scaleColor(0x666666), 0x666666];
+						backgroundColors = makeColors(0x666666);
 				}
 				
 				var matrix2:Matrix = new Matrix();
 				matrix2.createGradientBox(unscaledWidth, unscaledHeight, Math.PI / 2);
-				graphics.beginGradientFill(GradientType.LINEAR, backgroundColors, [1, 1], [0, 255], matrix2);
+				graphics.beginGradientFill(GradientType.LINEAR, backgroundColors, [1, 1, 1, 1], [0, 126,127, 255], matrix2);
 				graphics.drawRect(0, 0, unscaledWidth, unscaledHeight);
 			}
+		}
+		private static function makeColors(mainColor:uint):Array
+		{
+			return [scaleColor(mainColor, 1.5), mainColor, scaleColor(mainColor, .25), mainColor];
 		}
 		private static function scaleColor(color:uint, scale:Number=.25):uint
 		{

@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <s:View xmlns:fx="http://ns.adobe.com/mxml/2009" 
         xmlns:s="library://ns.adobe.com/flex/spark"
-		title="Washers and Dryers" creationComplete="init();" viewActivate="onViewActivate()" width="100%" height="100%" opaqueBackground="true">
-	<fx:Script>
+		title="Washers and Dryers" creationComplete="init();"
+		viewActivate="onViewActivate();" addedToStage="stage.displayState=StageDisplayState.NORMAL" width="100%" height="100%" opaqueBackground="true">
+	<fx:Script> 
 		<![CDATA[
+		import flash.display.StageDisplayState;
 		import flash.desktop.NativeApplication;
 		import flash.events.Event;
 		import flash.events.KeyboardEvent;
@@ -153,6 +155,9 @@
 			itemRenderer="net.zdremann.esuds.ClothesMachineItemRenderer"
 			touchInteractionStart="stage.frameRate=60;" touchInteractionEnd="stage.frameRate=10;"
 			width="100%" height="100%">
+		<s:layout>
+			<s:VerticalLayout gap="1" />
+		</s:layout>
 		<s:change>
 			<![CDATA[
 			this.navigator.pushView(MachineView, data, machineList.selectedItem);

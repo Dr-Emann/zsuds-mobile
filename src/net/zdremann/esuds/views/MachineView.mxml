@@ -3,10 +3,11 @@
         xmlns:s="library://ns.adobe.com/flex/spark"
 		xmlns:esuds="net.zdremann.esuds.*"
 		title="{machineList.selectedItem.type == ClothesMachine.WASHER?'Washer':'Dryer'} {machineList.selectedItem.number}"
-		
+		actionBarVisible="{(this.parentApplication as ViewNavigatorApplication).height>400}"
 		creationComplete="init();" width="100%" height="100%" resize="onResize(event)" gestureSwipe="swipeHandler(event);" deactivate="onDeactivate();">
 	<fx:Script>
 		<![CDATA[
+		import spark.components.ViewNavigatorApplication;
 		import com.greensock.data.TweenLiteVars;
 		import com.greensock.TweenLite;
 		import flash.events.Event;
