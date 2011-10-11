@@ -9,14 +9,17 @@ package net.zdremann.esuds
 	import flash.net.URLRequest;
 	import flash.net.URLVariables;
 	import mx.core.FlexGlobals;
+	import mx.core.IFlexDisplayObject;
 	import mx.events.ResizeEvent;
 	import mx.events.ValidationResultEvent;
 	import mx.formatters.PhoneFormatter;
+	import mx.managers.LayoutManager;
 	import mx.managers.PopUpManager;
 	import mx.validators.EmailValidator;
 	import mx.validators.PhoneNumberValidator;
 	import spark.components.Button;
 	import spark.components.LabelItemRenderer;
+	import spark.components.List;
 	import spark.components.SkinnablePopUpContainer;
 	import spark.components.supportClasses.StyleableTextField;
 	import spark.components.TextInput;
@@ -90,7 +93,7 @@ package net.zdremann.esuds
 			
 			this.addEventListener(ResizeEvent.RESIZE, onResize);
 			
-			this.cacheAsBitmap = true;
+			//this.cacheAsBitmap = true;
 			
 			this.minHeight = 0;
 			
@@ -103,7 +106,10 @@ package net.zdremann.esuds
 			{
 				this.currentPopup.maxWidth = this.width;
 				this.currentPopup.maxHeight = this.height;
+				this.currentPopup.width = 0;
+				this.currentPopup.width = NaN;
 				PopUpManager.centerPopUp(this.currentPopup);
+				
 			}
 		}
 		
@@ -492,7 +498,7 @@ package net.zdremann.esuds
 			graphics.drawRoundRect(20, 20, unscaledWidth - 20 - 20, unscaledHeight - 20 - 20, 100, 100);
 			graphics.endFill();
 		}
-		private function scaleColor(color:uint, scale:Number=.25):uint
+		private static function scaleColor(color:uint, scale:Number=.25):uint
 		{
 			var r:int = (color & 0xFF0000) >> 16;
 			var g:int = (color & 0x00FF00) >> 8;

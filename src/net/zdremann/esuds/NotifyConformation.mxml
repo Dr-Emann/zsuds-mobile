@@ -15,6 +15,19 @@
 		<![CDATA[
 			private var _message:String;
 			
+			import flash.display.DisplayObjectContainer;
+			override public function open(owner:flash.display.DisplayObjectContainer, modal:Boolean = false):void 
+			{
+				super.open(owner, modal);
+				Object(this.owner).owner.enabled = false;
+			}
+			
+			override public function close(commit:Boolean = false, data:* = null):void 
+			{
+				super.close(commit, data);
+				Object(this.owner).owner.enabled = true;
+			}
+			
 			[Bindable]
 			public function get message():String
 			{
@@ -28,7 +41,7 @@
 			
 			private function onClick(commit:Boolean):void
 			{
-				super.close(commit);
+				close(commit);
 			}
 		]]>
 	</fx:Script>

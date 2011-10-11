@@ -254,8 +254,6 @@ package net.zdremann.esuds
 		
 		override protected function drawBackground(unscaledWidth:Number, unscaledHeight:Number):void
 		{
-			//super.drawBackground(unscaledWidth, unscaledHeight);
-			
 			var backgroundColors:Array = [0xffffff, 0xffffff];
 			var downColor:* = getStyle("downColor");
 			var selectionColor:* = getStyle("selectionColor");
@@ -316,7 +314,7 @@ package net.zdremann.esuds
 				graphics.drawRect(0, 0, unscaledWidth, unscaledHeight);
 			}
 		}
-		private function scaleColor(color:uint, scale:Number=.25):uint
+		private static function scaleColor(color:uint, scale:Number=.25):uint
 		{
 			var r:int = (color & 0xFF0000) >> 16;
 			var g:int = (color & 0x00FF00) >> 8;
