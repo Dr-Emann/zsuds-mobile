@@ -126,6 +126,8 @@ package net.zdremann.esuds
 			if (!value)
 				return;
 			
+			notifEmailInput.text = FlexGlobals.topLevelApplication.persistenceManager.getProperty("emailOrPhone");
+			
 			this.type = value.type as int;
 			this.status = value.status as int;
 			this.timeRemaining = value.timeRemaining as int;
@@ -167,7 +169,6 @@ package net.zdremann.esuds
 			
 			notifEmailInput = new TextInput();
 			notifEmailInput.prompt = "Enter email or phone number";
-			notifEmailInput.text = FlexGlobals.topLevelApplication.persistenceManager.getProperty("emailOrPhone");
 			addChild(notifEmailInput);
 			
 			notifSubmitBtn = new Button();
@@ -215,6 +216,25 @@ package net.zdremann.esuds
 				errorPopup.errorMessage = notifEmailInput.errorString;
 				if (phoneValidator.validate().type == ValidationResultEvent.VALID)
 				{
+					if (FlexGlobals.topLevelApplication.persistenceManager.getProperty("carrierList") is Array)
+					{
+						var numText:String = (notifEmailInput.text as String).replace("-", "").replace("(", "").replace(")", "").replace(" ","");
+						for each(var carrier:Object in (FlexGlobals.topLevelApplication.persistenceManager.getProperty("carrierList") as Array))
+						{
+							if (carrier.number == numText)
+							{
+								var notifyPopup:NotifyConformation = new NotifyConformation();
+								notifyPopup.message = "Are you sure you want to be notified?";
+								notifyPopup.maxWidth = this.width;
+								notifyPopup.maxHeight = this.height;
+								notifyPopup.addEventListener(PopUpEvent.CLOSE, phoneNotifyClose);
+								notifyPopup.open(this.owner, true);
+								PopUpManager.centerPopUp(notifyPopup);
+								currentPopup = notifyPopup;
+								return;
+							}
+						}
+					}
 					errorPopup = null;
 					var phoneChoser:PhoneChooserPopup = new PhoneChooserPopup();
 					phoneChoser.addEventListener(PopUpEvent.CLOSE, phoneChoserClose_Handler);
@@ -234,20 +254,49 @@ package net.zdremann.esuds
 			}
 		}
 		
+		private function phoneNotifyClose(e:PopUpEvent):void 
+		{
+			currentPopup = null;
+			if (e.commit)
+			{
+				var numText:String = (notifEmailInput.text as String).replace("-", "").replace("(", "").replace(")", "").replace(" ", "");
+				var carrier:Object;
+				for each(var phone:Object in FlexGlobals.topLevelApplication.persistenceManager.getProperty("carrierList") as Array)
+				{
+					if (phone.number == numText)
+					{
+						carrier = phone.carrier;
+						break;
+					}
+				}
+				sendEmailToPhone(carrier);
+			}
+		}
+		
 		private function phoneChoserClose_Handler(e:PopUpEvent):void 
 		{
 			currentPopup = null;
 			if (e.commit)
 			{
-				var formater:PhoneFormatter = new PhoneFormatter();
-				formater.areaCode = -1;
+				sendEmailToPhone(e.data);
 				var numText:String = (notifEmailInput.text as String).replace("-", "").replace("(", "").replace(")", "").replace(" ","");
-				notifEmailInput.text = formater.format(numText);
-				FlexGlobals.topLevelApplication.persistenceManager.setProperty("emailOrPhone", notifEmailInput.text);
-				var email:String = (e.data.email as String).replace("[num]", numText);
-				trace(email);
-				requestNotification(email);
+				var currArray:Array = [];
+				if (FlexGlobals.topLevelApplication.persistenceManager.getProperty("carrierList") is Array)
+					currArray = FlexGlobals.topLevelApplication.persistenceManager.getProperty("carrierList");
+				currArray.push( { number:numText, carrier:e.data } );
+				FlexGlobals.topLevelApplication.persistenceManager.setProperty("carrierList", currArray)
 			}
+		}
+		
+		private function sendEmailToPhone(carrier:Object):void
+		{
+			var formater:PhoneFormatter = new PhoneFormatter();
+			formater.areaCode = -1;
+			var numText:String = (notifEmailInput.text as String).replace("-", "").replace("(", "").replace(")", "").replace(" ","");
+			notifEmailInput.text = formater.format(numText);
+			FlexGlobals.topLevelApplication.persistenceManager.setProperty("emailOrPhone", notifEmailInput.text);
+			var email:String = (carrier.email as String).replace("[num]", numText);
+			requestNotification(email);
 		}
 		
 		private function errorPopupClose_Handler(e:PopUpEvent):void 
@@ -257,6 +306,7 @@ package net.zdremann.esuds
 		
 		private function requestNotification(email:String, selectedMachine:uint = 0):void
 		{
+			trace(email);
 			if (!selectedMachine)
 				selectedMachine = data.id;
 			
@@ -286,7 +336,7 @@ package net.zdremann.esuds
 			var data:String = event.target.data;
 			var errorPopup:ErrorPopup = new ErrorPopup();
 			errorPopup.errorMessage = "";
-			if ( data.indexOf("Errors") != -1)
+			if ( data.indexOf("error") != -1)
 			{
 				var knownError:Boolean = false;
 				if (data.indexOf("The email address is not valid.") != -1)
