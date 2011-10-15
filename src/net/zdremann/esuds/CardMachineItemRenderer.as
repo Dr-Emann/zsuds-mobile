@@ -291,12 +291,17 @@ package net.zdremann.esuds
 				var knownError:Boolean = false;
 				if (data.indexOf("The email address is not valid.") != -1)
 				{
-					errorPopup.errorMessage = "The email address is not valid\n";
+					errorPopup.errorMessage += "The email address is not valid\n";
 					knownError = true;
 				}
 				if (data.indexOf("is not in use") != -1)
 				{
-					errorPopup.errorMessage = "Selected machine is already in use\n";
+					errorPopup.errorMessage += "Selected machine is already in use\n";
+					knownError = true;
+				}
+				if (data.indexOf("You are already registered to receive notification") != -1)
+				{
+					errorPopup.errorMessage += "You are already registered to receive a notification for this machine\n";
 					knownError = true;
 				}
 				if (!knownError)
