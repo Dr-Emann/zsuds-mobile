@@ -48,7 +48,7 @@ import mx.collections.ArrayList;
 				{label:"Sprint", email:"[num]@messaging.sprintpcs.com" },
 				{label:"T-Mobile", email:"[num]@tmomail.net" },
 				{label:"US Cellular", email:"[num]email.uscc.net" },
-				{label:"Verison", email:"[num]@vtext.com" },
+				{label:"Verizon", email:"[num]@vtext.com" },
 				{label:"Virgin Mobile USA", email:"[num]@vmobl.com" }
 			]);
 			
