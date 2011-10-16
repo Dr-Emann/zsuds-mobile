@@ -336,7 +336,7 @@ package net.zdremann.esuds
 			var data:String = event.target.data;
 			var errorPopup:ErrorPopup = new ErrorPopup();
 			errorPopup.errorMessage = "";
-			if ( data.indexOf("error") != -1)
+			if ( data.indexOf("errors") != -1)
 			{
 				var knownError:Boolean = false;
 				if (data.indexOf("The email address is not valid.") != -1)
