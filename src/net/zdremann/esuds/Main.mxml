@@ -32,7 +32,7 @@
 			content-background-color:#181818;
 		}
 		
-		views|HomeSettingsView
+		views|RoomChooserView
 		{
 			content-background-color: #ffffff;
 			backgroundColor: #ffffff;

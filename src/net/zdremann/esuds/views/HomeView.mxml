@@ -18,7 +18,7 @@
 		import mx.events.FlexEvent;
 		import net.zdremann.esuds.ClothesMachine;
 		import net.zdremann.esuds.ClothesMachineItemRenderer;
-		import net.zdremann.esuds.views.HomeSettingsView;
+		import net.zdremann.esuds.views.RoomChooserView;
 		import spark.events.IndexChangeEvent;
 		
 		[Bindable]
@@ -34,7 +34,7 @@
 			this.machineListData = new ArrayList(this.data as Array);
 			if (!FlexGlobals.topLevelApplication.persistenceManager.getProperty("room"))
 			{
-				navigator.pushView(HomeSettingsView);
+				navigator.pushView(RoomChooserView);
 			}
 			this.addEventListener(KeyboardEvent.KEY_DOWN, onKeyDown_Handler);
 		}
@@ -149,7 +149,7 @@
 		<!-- Place non-visual elements (e.g., services, value objects) here -->
 	</fx:Declarations>
 	<s:viewMenuItems>
-		<s:ViewMenuItem label="Change Room" click="navigator.pushView(HomeSettingsView)" />
+		<s:ViewMenuItem label="Change Room" click="navigator.pushView(RoomChooserView)" />
 	</s:viewMenuItems>
 	<s:List id="machineList" dataProvider="{machineListData}"
 			itemRenderer="net.zdremann.esuds.ClothesMachineItemRenderer"
