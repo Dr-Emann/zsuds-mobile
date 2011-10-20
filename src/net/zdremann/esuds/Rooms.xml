@@ -1,5 +1,24 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <data>
+	<school name="Carnegie Mellon University">
+		<room id="331">Boss House</room>
+		<room id="325">Doherty Apartments</room>
+		<room id="679">Donner House</room>
+		<room id="341">Hammerschlag House</room>
+		<room id="345">Henderson House</room>
+		<room id="343">Margaret Morrison Plaza 4</room>
+		<room id="322">McGill House</room>
+		<room id="319">Morewood Gardens A Tower</room>
+		<room id="104">Moorwood Gardens D Tower</room>
+		<room id="327">Mudge House B Tower</room>
+		<room id="445">Mudge House C Tower</room>
+		<room id="329">Scobell House</room>
+		<room id="333">Shirley Apartments</room>
+		<room id="339">Stever House Laundry</room>
+		<room id="347">Welch House</room>
+		<room id="105">West Wing/Resnik</room>
+		<room id="335">Woodlawn Apartment</room>
+	</school>
 	<school name="University of Maryland">
 		<hall name="Chesapeake Hall">
 			<room id="6831">Chesapeake North</room>
