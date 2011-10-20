@@ -54,6 +54,14 @@
 			<room id="6851">West Hill Laundry</room>
 		</hall>
 	</school>
+	<school name="University of Southern Mississippi">
+		<hall name="Century Park">
+			<room id="1037745">Century Park 1</room>
+			<room id="1037724">Century Park 2</room>
+			<room id="1037746">Century Park 3</room>
+			<room id="1037725">Century Park 4</room>
+		</hall>
+	</school>
 	<school name="Stevenson">
 		<room id="1166">Belfast Hall</room>
 		<room id="1169">Cromwell Hall</room>
@@ -68,5 +76,8 @@
 		<room id="2822">Western Run Hall</room>
 		<room id="1026712">Wooded Way</room>
 		<room id="1168">Worthington Hall</room>
+	</school>
+	<school name="Wayne State University">
+		<room id="5617">University Towers</room>
 	</school>
 </data>
