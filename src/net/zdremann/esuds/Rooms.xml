@@ -1,5 +1,56 @@
 <?xml version="1.0" encoding="utf-8"?>
 <data>
+	<school name="Binghamton University">
+		<campus name="College in the Woods">
+			<room id="1008716">Cayuga</room>
+			<room id="1008720">Mohawk</room>
+			<room id="1008712">Oneida</room>
+			<room id="1008718">Onondaga</room>
+			<room id="1008714">Seneca</room>
+		</campus>
+		<campus name="Dickinson">
+			<room id="1039287">Champlaign</room>
+			<room id="1039188">Digman</room>
+			<room id="1039268">Rafuse</room>
+			<room id="1039234">Whitney A Side</room>
+			<room id="1039196">Whitney B Side</room>
+		</campus>
+		<campus name="Hinman">
+			<hall name="Cleveland">
+				<room id="7205">Cleveland A</room>
+				<room id="1008730">Cleveland B</room>
+			</hall>
+			<hall name="Hughes">
+				<room id="1008728">Hughes A</room>
+				<room id="1008729">Hughes B</room>
+			</hall>
+			<hall name="Lehman">
+				<room id="1008732">Lehman A</room>
+				<room id="1008733">Lehman B</room>
+			</hall>
+			<hall name="Roosevelt">
+				<room id="1008722">Roosevelt A</room>
+				<room id="1008723">Roosevelt B</room>
+			</hall>
+			<hall name="Smith Hall">
+				<room id="1008725">Smith A</room>
+				<room id="1008726">Smith B</room>
+			</hall>
+		</campus>
+		<campus name="Newing">
+			<hall name="Bingham">
+				<room id="1033795">Bingham 1</room>
+				<room id="1033937">Bingham 2</room>
+			</hall>
+			<!-- TODO Fix broome has both dryers and washers in seperate rooms -->
+		</campus>
+		<campus name="Susquehanna Graduate Community">
+			<room id="1013011">Brandywine</room>
+			<room id="1013008">Choconut</room>
+			<room id="1012989">Glenwood</room>
+			<room id="1012991">Nanticoke</room>
+		</campus>
+	</school>
 	<school name="Carnegie Mellon University">
 		<campus name="main">
 			<room id="331">Boss House</room>
