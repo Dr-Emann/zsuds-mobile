@@ -79,7 +79,10 @@
 		
 		public function back():void
 		{
+			FlexGlobals.topLevelApplication.persistenceManager.save();
+			FlexGlobals.topLevelApplication.persistenceManager.load();
 			navigator.popView();
+			
 		}
 		
 		public function onDeactivate():void

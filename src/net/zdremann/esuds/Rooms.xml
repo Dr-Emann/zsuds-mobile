@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<data>
+	<school name="University of Maryland">
+		<hall name="Chesapeake Hall">
+			<room id="6831">Chesapeake North</room>
+			<room id="6835">Chesapeake South</room>
+		</hall>
+		<hall name="Erickson Hall">
+			<room id="6834">Erickson Upper</room>
+			<room id="5099">Erickson Lower</room>
+		</hall>
+		<hall name="Harbor Hall">
+			<room id="6838">Harbor Front</room>
+			<room id="6997">Harbor Back</room>
+		</hall>
+		<hall name="Hillside Apartments">
+			<room id="6849">Hillside Laundry</room>
+		</hall>
+		<hall name="Patapsco Hall">
+			<room id="6841">Patapsco North</room>
+			<room id="6842">Patapsco South</room>
+		</hall>
+		<hall name="Potomac Hall">
+			<room id="6844">Potomac North</room>
+			<room id="6845">Potomac South</room>
+		</hall>
+		<hall name="Susquehanna Hall">
+			<room id="6833">Susquehanna North</room>
+			<room id="6836">Susquehanna South</room>
+		</hall>
+		<hall name="Terrace Apartments">
+			<room id="6847">Terrace Laundry</room>
+		</hall>
+		<hall name="West Hill Apartments">
+			<room id="6851">West Hill Laundry</room>
+		</hall>
+	</school>
+	<school name="Stevenson">
+		<room id="1166">Belfast Hall</room>
+		<room id="1169">Cromwell Hall</room>
+		<room id="1165">Dunlaney Hall</room>
+		<room id="1164">Greenspring Hall</room>
+		<room id="1040367">Hering Run</room>
+		<room id="1163">Long Green Hall</room>
+		<room id="1171">Patapsco Hall</room>
+		<room id="1167">Shawan Hall</room>
+		<room id="1170">Susquehanna Hall</room>
+		<room id="1040368">Wakefield Way</room>
+		<room id="2822">Western Run Hall</room>
+		<room id="1026712">Wooded Way</room>
+		<room id="1168">Worthington Hall</room>
+	</school>
+</data>

@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:View xmlns:fx="http://ns.adobe.com/mxml/2009" 
+               xmlns:s="library://ns.adobe.com/flex/spark" 
+               xmlns:mx="library://ns.adobe.com/flex/halo" viewActivate="onViewActivate();">
+	
+	<fx:Declarations>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+	</fx:Declarations>
+	
+	<fx:Script>
+		<![CDATA[
+		import mx.collections.ArrayList;
+		import mx.collections.IList;
+		import mx.core.FlexGlobals;
+		import net.zdremann.esuds.views.RoomChooserView;
+		import spark.events.IndexChangeEvent;
+		
+		public var rooms:XML;
+		public var buildings:ArrayList;
+		
+		public function onViewActivate():void
+		{
+			if (!rooms && !buildings)
+			{
+				var file:ByteArray = new RoomChooserView._roomsXMLClass;
+				var str:String = file.readUTFBytes(file.length);
+				rooms = new XML(str);
+				file = null;
+				str = null;
+			}
+			var arr:Array = new Array();
+			for each(var name:String in rooms.school.@name)
+			{
+				arr.push(name);
+			}
+			buildings = new ArrayList(arr);
+			schoolChoser.dataProvider = buildings;
+		}
+		
+		public function onChange(event:IndexChangeEvent):void
+		{
+			FlexGlobals.topLevelApplication.persistenceManager.setProperty("school", schoolChoser.selectedItem);
+			navigator.pushView(RoomChooserView, schoolChoser.selectedItem);
+		}
+		public function back():void
+		{
+			FlexGlobals.topLevelApplication.persistenceManager.save();
+			FlexGlobals.topLevelApplication.persistanceManager.load();
+			
+			// If no room is chosen, and user tries to go back, exit the app
+			if (FlexGlobals.topLevelApplication.persistenceManager.getProperty("room"))
+				NativeApplication.nativeApplication.exit();
+			else
+				navigator.popView();
+		}
+		public function refresh():void
+		{
+			
+		}
+		
+		]]>
+	</fx:Script>
+	<s:layout>
+		<s:VerticalLayout horizontalAlign="justify" paddingBottom="20" paddingLeft="20" paddingTop="20" paddingRight="20" />
+	</s:layout>
+	<s:actionContent>
+		
+	</s:actionContent>
+	<s:Label text="Choose a School: " styleName="Title" />
+	<s:List id="schoolChoser" width="100%" height="100%" itemRenderer="spark.components.LabelItemRenderer"
+			touchInteractionStart="stage.frameRate=60;" touchInteractionEnd="stage.frameRate=10;" change="onChange(event);" />
+</s:View>

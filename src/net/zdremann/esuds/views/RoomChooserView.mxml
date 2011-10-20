@@ -1,23 +1,101 @@
 <?xml version="1.0" encoding="utf-8"?>
 <s:View xmlns:fx="http://ns.adobe.com/mxml/2009" 
         xmlns:s="library://ns.adobe.com/flex/spark"
-		title="Settings" creationComplete="init();" width="100%" height="100%">
+		title="Settings" viewActivate="init();" width="100%" height="100%">
 	<fx:Script>
 		<![CDATA[
+		import flash.utils.ByteArray;
 		import mx.collections.ArrayList;
 		import mx.collections.IList;
 		import mx.core.FlexGlobals;
+		import spark.events.IndexChangeEvent;
 		import spark.managers.PersistenceManager;
+		
+		[Embed(source="../Rooms.xml", mimeType="application/octet-stream")]
+		public static const _roomsXMLClass:Class;
+		
+		public var rooms:XML;
+		public var selectedBuilding:ArrayList;
+		
+		
+		/**
+		 * The string name for the school
+		 */
+		override public function get data():Object 
+		{
+			return super.data;
+		}
+		
+		override public function set data(value:Object):void 
+		{
+			if (!rooms)
+			{
+				var file:ByteArray = new _roomsXMLClass;
+				var str:String = file.readUTFBytes(file.length);
+				rooms = new XML(str);
+				str = null;
+				file = null;
+			}
+			super.data = value;
+			
+			if(this.titleLabel)
+				this.titleLabel.text = value as String;
+			
+			var arr:Array = new Array();
+			var school:XML;
+			var hall:XML;
+			var room:XML;
+			for each (school in rooms.school)
+			{
+				if (school.@name == value)
+				{
+					if (school.children()[0].name() == "hall")
+					{
+						for each(hall in school.hall)
+						{
+							arr.push( { header:true, label:hall.@name } );
+							for each(room in hall.room)
+							{
+								arr.push( { id:room.@id, label:room.toString() } );
+							}
+						}
+					}
+					else if (school.children()[0].name() == "room")
+					{
+						for each(room in school.room)
+						{
+							arr.push( { id:room.@id, label:room.toString() } );
+						}
+					}
+					selectedBuilding = new ArrayList(arr);
+					rooms = null;
+					if (roomChooser)
+						roomChooser.dataProvider = selectedBuilding;
+					return;
+				}
+			}
+		}
+		
 		private function init():void
 		{
-			roomChooser.dataProvider = FlexGlobals.topLevelApplication.rooms;
+			if (!data)
+			{
+				data = FlexGlobals.topLevelApplication.persistenceManager.getProperty("school");
+				if (!data)
+				{
+					navigator.popView();
+				}
+			}
+			roomChooser.dataProvider = selectedBuilding;
+			titleLabel.text = data as String;
+			
 			if (FlexGlobals.topLevelApplication.persistenceManager.getProperty("room"))
 			{
 				if (!(roomChooser.dataProvider is IList))
 					return;
 				for (var i:int = 0; i < roomChooser.dataProvider.length; i++)
 				{
-					if (roomChooser.dataProvider.getItemAt(i).roomId == FlexGlobals.topLevelApplication.persistenceManager.getProperty("room"))
+					if (roomChooser.dataProvider.getItemAt(i).id == FlexGlobals.topLevelApplication.persistenceManager.getProperty("room"))
 					{
 						roomChooser.selectedIndex = i;
 						break;
@@ -42,17 +120,20 @@
 		{
 			FlexGlobals.topLevelApplication.persistenceManager.save();
 			FlexGlobals.topLevelApplication.persistenceManager.load();
-			
-			// If no room is chosen, and user tries to go back, exit the app
-			if ((FlexGlobals.topLevelApplication.persistenceManager as PersistenceManager).getProperty("room"))
-				NativeApplication.nativeApplication.exit();
-			else
-				navigator.popView();
+			navigator.popView();
 		}
 		
 		public function refresh():void
 		{
 
+		}
+		
+		protected function onChanging(event:IndexChangeEvent):void
+		{
+			if ((roomChooser.dataProvider as IList).getItemAt(event.newIndex).header)
+			{
+				event.preventDefault();
+			}
 		}
 		
 		]]>
@@ -66,7 +147,8 @@
 	<s:layout>
 		<s:VerticalLayout horizontalAlign="justify" paddingBottom="20" paddingLeft="20" paddingTop="20" paddingRight="20" />
 	</s:layout>
-	<s:Label text="Choose desired room" styleName="Title"/>
-	<s:List id="roomChooser" labelField="roomName" height="100%" change="FlexGlobals.topLevelApplication.persistenceManager.setProperty('room',roomChooser.selectedItem);navigator.popView();"
-		    touchInteractionStart="stage.frameRate=60;" touchInteractionEnd="stage.frameRate=10;" />
+	<s:Label id="titleLabel" styleName="Title"/>
+	
+	<s:List id="roomChooser" labelField="label" height="100%" change="FlexGlobals.topLevelApplication.persistenceManager.setProperty('room',roomChooser.selectedItem.id);navigator.popToFirstView();"
+		    touchInteractionStart="stage.frameRate=60;" touchInteractionEnd="stage.frameRate=10;" changing="onChanging(event);" />
 </s:View>

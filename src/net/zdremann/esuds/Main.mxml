@@ -32,7 +32,7 @@
 			content-background-color:#181818;
 		}
 		
-		views|RoomChooserView
+		views|RoomChooserView, views|SchoolChooserView
 		{
 			content-background-color: #ffffff;
 			backgroundColor: #ffffff;
@@ -65,22 +65,6 @@
 		import flash.ui.MultitouchInputMode;
 		import mx.collections.ArrayList;
 		import spark.managers.PersistenceManager;
-		
-		public const rooms:ArrayList = new ArrayList(
-		[{ roomId:1166, roomName:"Belfast Hall" },
-		{ roomId:1169, roomName:"Cromwell Hall" },
-		{ roomId:1165, roomName:"Dulaney Hall" },
-		{ roomId:1164, roomName:"Greenspring Hall" },
-		{ roomId:1040367, roomName:"Hering Run" },
-		{ roomId:1163, roomName:"Long Green Hall" },
-		{ roomId:1171, roomName:"Patapsco Hall" },
-		{ roomId:1167, roomName:"Shawan Hall" },
-		{ roomId:1170, roomName:"Susquehanna Hall" },
-		{ roomId:1040368, roomName:"Wakefield Way" },
-		{ roomId:2822, roomName:"Western Run Hall" },
-		{ roomId:1026712, roomName:"Wooded Way" },
-		{ roomId:1168, roomName:"Worthington Hall"}]
-		);
 		]]>
 	</fx:Script>
 	<s:navigationContent>

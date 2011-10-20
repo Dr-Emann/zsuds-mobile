@@ -34,7 +34,7 @@
 			this.machineListData = new ArrayList(this.data as Array);
 			if (!FlexGlobals.topLevelApplication.persistenceManager.getProperty("room"))
 			{
-				navigator.pushView(RoomChooserView);
+				navigator.pushView(SchoolChooserView);
 			}
 			this.addEventListener(KeyboardEvent.KEY_DOWN, onKeyDown_Handler);
 		}
@@ -70,7 +70,7 @@
 		{
 			var loader:flash.net.URLLoader = new URLLoader();
 			loader.addEventListener(Event.COMPLETE, loaderCompleate_Handler);
-			loader.load(new URLRequest("http://stevenson.esuds.net/RoomStatus/machineStatus.i?bottomLocationId="+FlexGlobals.topLevelApplication.persistenceManager.getProperty("room").roomId));
+			loader.load(new URLRequest("http://stevenson.esuds.net/RoomStatus/machineStatus.i?bottomLocationId="+FlexGlobals.topLevelApplication.persistenceManager.getProperty("room")));
 		}
 		private function loaderCompleate_Handler(e:flash.events.Event):void
 		{
@@ -149,7 +149,17 @@
 		<!-- Place non-visual elements (e.g., services, value objects) here -->
 	</fx:Declarations>
 	<s:viewMenuItems>
-		<s:ViewMenuItem label="Change Room" click="navigator.pushView(RoomChooserView)" />
+		<s:ViewMenuItem label="Change School" click="navigator.pushView(SchoolChooserView);" />
+		<s:ViewMenuItem label="Change Room">
+			<s:click>
+				<![CDATA[
+				if (FlexGlobals.topLevelApplication.persistenceManager.getProperty('school'))
+					navigator.pushView(RoomChooserView);
+				else 
+					navigator.pushView(SchoolChooserView);
+				]]>
+			</s:click>
+		</s:ViewMenuItem>
 	</s:viewMenuItems>
 	<s:List id="machineList" dataProvider="{machineListData}"
 			itemRenderer="net.zdremann.esuds.ClothesMachineItemRenderer"
