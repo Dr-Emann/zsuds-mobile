@@ -150,7 +150,8 @@
 		    touchInteractionStart="stage.frameRate=60;" touchInteractionEnd="stage.frameRate=10;" changing="onChanging(event);">
 			<s:change>
 				<![CDATA[
-				FlexGlobals.topLevelApplication.persistenceManager.setProperty('room',roomChooser.selectedItem.id.toString());
+				FlexGlobals.topLevelApplication.persistenceManager.setProperty('room', roomChooser.selectedItem.id.toString());
+				FlexGlobals.topLevelApplication.persistenceManager.setProperty('school', this.data);
 				navigator.popToFirstView();
 				]]>
 			</s:change>

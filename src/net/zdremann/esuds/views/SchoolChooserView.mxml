@@ -55,7 +55,6 @@
 		
 		public function onChange(event:IndexChangeEvent):void
 		{
-			FlexGlobals.topLevelApplication.persistenceManager.setProperty("school", schoolChoser.selectedItem);
 			navigator.pushView(RoomChooserView, schoolChoser.selectedItem);
 		}
 		public function back():void
