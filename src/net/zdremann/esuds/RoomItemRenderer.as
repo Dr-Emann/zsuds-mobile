@@ -11,6 +11,7 @@ package net.zdremann.esuds
 	public class RoomItemRenderer extends LabelItemRenderer 
 	{
 		public var isHeading:Boolean;
+		public var isSubHeading:Boolean;
 		
 		override public function get data():Object 
 		{
@@ -19,25 +20,39 @@ package net.zdremann.esuds
 		
 		override public function set data(value:Object):void 
 		{
-			super.data = value;
-			if (data.header)
+			if (value.header)
 			{
 				isHeading = true;
+				isSubHeading = false;
 				if (labelDisplay)
 				{
 					labelDisplay.setStyle("size", 23);
 					labelDisplay.setStyle("fontWeight", "bold");
 				}
 			}
+			else if (value.subHeader)
+			{
+				isSubHeading = true;
+				isHeading = false;
+				
+				if (labelDisplay)
+				{
+					labelDisplay.setStyle("size", 21);
+					labelDisplay.setStyle("fontWeight", "normal");
+				}
+			}
 			else
 			{
 				isHeading = false;
+				isSubHeading = false;
 				if (labelDisplay)
 				{
 					labelDisplay.setStyle("size", 18);
 					labelDisplay.setStyle("fontWeight", "normal");
 				}
 			}
+			
+			super.data = value;
 		}
 		
 		public const paddingTop:int = 10;
@@ -56,6 +71,11 @@ package net.zdremann.esuds
 				setElementSize(labelDisplay, unscaledWidth - paddingLeft - paddingRight, getElementPreferredHeight(labelDisplay));
 				setElementPosition(labelDisplay, paddingLeft, unscaledHeight-getElementPreferredHeight(labelDisplay)-paddingBottom-paddingTop/2);
 				
+			}
+			else if (isSubHeading)
+			{
+				setElementSize(labelDisplay, unscaledWidth - 2 * paddingLeft - paddingRight, getElementPreferredHeight(labelDisplay));
+				setElementPosition(labelDisplay, 2 * paddingLeft, unscaledHeight - getElementPreferredHeight(labelDisplay) - paddingBottom - paddingTop / 2);
 			}
 			else
 			{
@@ -94,19 +114,24 @@ package net.zdremann.esuds
 		override protected function drawBackground(unscaledWidth:Number, unscaledHeight:Number):void 
 		{
 			var backgroundColors:Array = [0xffffff, 0xffffff];
-			
+			var colors:Array = [0x8E949D, 0xd3d5dE];
+			var alphas:Array = [1, 1];
+			var ratios:Array = [0, 255];
+			var matrix:Matrix = new Matrix();
 			if (isHeading)
 			{
-				var colors:Array = [0x8E949D, 0xd3d5dE];
-				var alphas:Array = [1, 1];
-				var ratios:Array = [0, 255];
-				var matrix:Matrix = new Matrix();
-				
+				matrix.createGradientBox(unscaledWidth, unscaledHeight, Math.PI / 2, 0, 0);
+				graphics.beginGradientFill(GradientType.LINEAR, colors, alphas, ratios, matrix);
+				graphics.drawRoundRectComplex(0, 0, unscaledWidth, unscaledHeight, Math.min(paddingTop, paddingLeft)-5, Math.min(paddingTop, paddingLeft)-5, 0, 0);
+				//graphics.drawRect(0, 0, unscaledWidth, unscaledHeight);
+				graphics.endFill();
+			}
+			else if (isSubHeading)
+			{
 				matrix.createGradientBox(unscaledWidth, unscaledHeight, Math.PI / 2, 0, 0);
 				graphics.beginGradientFill(GradientType.LINEAR, colors, alphas, ratios, matrix);
 				//graphics.drawRoundRectComplex(0, 0, unscaledWidth, unscaledHeight, Math.min(paddingTop, paddingLeft)-5, Math.min(paddingTop, paddingLeft)-5, 0, 0);
-				graphics.drawRect(0, 0, unscaledWidth, unscaledHeight);
-				graphics.endFill();
+				graphics.drawRect(0, 1, unscaledWidth, unscaledHeight);
 			}
 			else
 			{
