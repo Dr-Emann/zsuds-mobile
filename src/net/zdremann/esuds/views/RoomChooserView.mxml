@@ -102,17 +102,6 @@
 					
 				}
 			}
-			this.addEventListener(KeyboardEvent.KEY_DOWN, onKeyDown_Handler);
-		}
-		
-		protected function onKeyDown_Handler(e:KeyboardEvent):void 
-		{
-			switch(e.keyCode)
-			{
-			case Keyboard.BACK:
-				back();
-				break;
-			}
 		}
 		
 		public function back():void
