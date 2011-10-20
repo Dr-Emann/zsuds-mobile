@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <s:View xmlns:fx="http://ns.adobe.com/mxml/2009" 
                xmlns:s="library://ns.adobe.com/flex/spark" 
-               xmlns:mx="library://ns.adobe.com/flex/halo" viewActivate="onViewActivate();">
+               xmlns:mx="library://ns.adobe.com/flex/halo" viewActivate="onViewActivate();" creationComplete="init();" title="Choose School">
 	
 	<fx:Declarations>
 		<!-- Place non-visual elements (e.g., services, value objects) here -->
@@ -17,6 +17,22 @@
 		
 		public var rooms:XML;
 		public var buildings:ArrayList;
+		
+		public function init():void
+		{
+			if(Capabilities.version.indexOf("AND")==0)
+				this.addEventListener(KeyboardEvent.KEY_DOWN, onKeyDown_Handler);
+		}
+		
+		private function onKeyDown_Handler(e:KeyboardEvent):void 
+		{
+			switch(e.keyCode)
+			{
+			case Keyboard.BACK:
+				back();
+				break;
+			}
+		}
 		
 		public function onViewActivate():void
 		{
@@ -45,10 +61,10 @@
 		public function back():void
 		{
 			FlexGlobals.topLevelApplication.persistenceManager.save();
-			FlexGlobals.topLevelApplication.persistanceManager.load();
+			FlexGlobals.topLevelApplication.persistenceManager.load();
 			
 			// If no room is chosen, and user tries to go back, exit the app
-			if (FlexGlobals.topLevelApplication.persistenceManager.getProperty("room"))
+			if (!FlexGlobals.topLevelApplication.persistenceManager.getProperty("room"))
 				NativeApplication.nativeApplication.exit();
 			else
 				navigator.popView();
@@ -61,12 +77,12 @@
 		]]>
 	</fx:Script>
 	<s:layout>
-		<s:VerticalLayout horizontalAlign="justify" paddingBottom="20" paddingLeft="20" paddingTop="20" paddingRight="20" />
+		<s:VerticalLayout horizontalAlign="justify" gap="20" paddingBottom="0" paddingLeft="0" paddingTop="20" paddingRight="0" />
 	</s:layout>
 	<s:actionContent>
 		
 	</s:actionContent>
-	<s:Label text="Choose a School: " styleName="Title" />
+	<s:Label text="Choose School" styleName="Title" />
 	<s:List id="schoolChoser" width="100%" height="100%" itemRenderer="spark.components.LabelItemRenderer"
 			touchInteractionStart="stage.frameRate=60;" touchInteractionEnd="stage.frameRate=10;" change="onChange(event);" />
 </s:View>

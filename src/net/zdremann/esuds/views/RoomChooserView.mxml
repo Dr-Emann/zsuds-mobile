@@ -39,8 +39,7 @@
 			}
 			super.data = value;
 			
-			if(this.titleLabel)
-				this.titleLabel.text = value as String;
+			this.title = (value as String);
 			
 			var arr:Array = new Array();
 			var school:XML;
@@ -88,7 +87,6 @@
 				}
 			}
 			roomChooser.dataProvider = selectedBuilding;
-			titleLabel.text = data as String;
 			
 			if (FlexGlobals.topLevelApplication.persistenceManager.getProperty("room"))
 			{
@@ -146,13 +144,8 @@
 		
 	</s:actionContent>
 	<s:layout>
-		<s:VerticalLayout horizontalAlign="left" gap="15" paddingBottom="0" paddingLeft="0" paddingTop="15" paddingRight="0" />
+		<s:VerticalLayout horizontalAlign="left" gap="15" paddingBottom="0" paddingLeft="0" paddingTop="0" paddingRight="0" />
 	</s:layout>
-	<s:HGroup>
-		<mx:Spacer width="15" />
-		<s:Label id="titleLabel" styleName="Title"/>
-	</s:HGroup>
-	
 	<s:List id="roomChooser" labelField="label" width="100%" height="100%" itemRenderer="net.zdremann.esuds.RoomItemRenderer"
 		    touchInteractionStart="stage.frameRate=60;" touchInteractionEnd="stage.frameRate=10;" changing="onChanging(event);">
 			<s:change>
