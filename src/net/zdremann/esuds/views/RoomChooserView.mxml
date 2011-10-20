@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <s:View xmlns:fx="http://ns.adobe.com/mxml/2009" 
         xmlns:s="library://ns.adobe.com/flex/spark"
+		xmlns:mx="library://ns.adobe.com/flex/mx"
 		title="Settings" viewActivate="init();" width="100%" height="100%">
 	<fx:Script>
 		<![CDATA[
@@ -56,7 +57,7 @@
 							arr.push( { header:true, label:hall.@name } );
 							for each(room in hall.room)
 							{
-								arr.push( { id:room.@id, label:room.toString() } );
+								arr.push( { id:room.@id, label:room.toString(), hasHall:true } );
 							}
 						}
 					}
@@ -145,10 +146,20 @@
 		
 	</s:actionContent>
 	<s:layout>
-		<s:VerticalLayout horizontalAlign="justify" paddingBottom="20" paddingLeft="20" paddingTop="20" paddingRight="20" />
+		<s:VerticalLayout horizontalAlign="left" gap="15" paddingBottom="0" paddingLeft="0" paddingTop="15" paddingRight="0" />
 	</s:layout>
-	<s:Label id="titleLabel" styleName="Title"/>
+	<s:HGroup>
+		<mx:Spacer width="15" />
+		<s:Label id="titleLabel" styleName="Title"/>
+	</s:HGroup>
 	
-	<s:List id="roomChooser" labelField="label" height="100%" change="FlexGlobals.topLevelApplication.persistenceManager.setProperty('room',roomChooser.selectedItem.id);navigator.popToFirstView();"
-		    touchInteractionStart="stage.frameRate=60;" touchInteractionEnd="stage.frameRate=10;" changing="onChanging(event);" />
+	<s:List id="roomChooser" labelField="label" width="100%" height="100%" itemRenderer="net.zdremann.esuds.RoomItemRenderer"
+		    touchInteractionStart="stage.frameRate=60;" touchInteractionEnd="stage.frameRate=10;" changing="onChanging(event);">
+			<s:change>
+				<![CDATA[
+				FlexGlobals.topLevelApplication.persistenceManager.setProperty('room',roomChooser.selectedItem.id.toString());
+				navigator.popToFirstView();
+				]]>
+			</s:change>
+	</s:List>
 </s:View>
