@@ -135,8 +135,12 @@
 			dryers.sortOn(["status", "timeRemaining","number"], Array.NUMERIC);
 			
 			// Combine lists, and add Headers
-			var a:Array = washers.concat({header:true, label:"Dryers"}, dryers);
-			a.unshift( { header:true, label:"Washers" } );
+			var a:Array = new Array();
+			if (washers.length > 0)
+				a = a.concat( { header:true, label:"Washers" }, washers);
+			if (dryers.length > 0)
+				a = a.concat( { header:true, label:"Dryers" }, dryers);
+			
 			this.data = a;
 			this.machineListData = new ArrayList(a);
 			
