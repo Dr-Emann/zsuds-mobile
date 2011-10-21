@@ -83,6 +83,27 @@
 			<room id="335">Woodlawn Apartment</room>
 		</campus>
 	</school>
+	<school name="Loyola University">
+		<campus name="main">
+			<room id="1015212">404 Tantallion</room>
+			<room id="1015214">405 Tantallion</room>
+			<room id="1015192">412 Tantallion</room>
+			<room id="1015194">417 Tantallion</room>
+			<room id="1015209">405 Bokel</room>
+			<room id="1015191">415 Bokel</room>
+			<room id="1015217">5204 Crowson</room>
+			<room id="1015204">5204 Gallagher</room>
+			<room id="1015208">5205 Gallagher</room>
+			<room id="7006">Butler</room>
+			<room id="5035">Campion</room>
+			<room id="7017">Flannery O'Connor Washers</room>
+			<room id="7004">Flannery O'Connor Dryers</room>
+			<room id="7005">Hammerman</room>
+			<room id="5038">Hopkins Court</room>
+			<room id="1009197">Newman Towers Washers</room>
+			<room id="7023">Newman Towers Dryers</room>
+		</campus>
+	</school>
 	<school name="University of Maryland">
 		<campus name="main">
 			<hall name="Chesapeake Hall">
