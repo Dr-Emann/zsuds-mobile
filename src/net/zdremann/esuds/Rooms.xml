@@ -42,7 +42,18 @@
 				<room id="1033795">Bingham 1</room>
 				<room id="1033937">Bingham 2</room>
 			</hall>
-			<!-- TODO Fix broome has both dryers and washers in seperate rooms -->
+			<hall name="Broome">
+				<room id="1040603">Broome Washers</room>
+				<room id="1040623">Broome Dryers</room>
+			</hall>
+			<hall name="Delaware">
+				<room id="1040604">Delaware Washers</room>
+				<room id="1040605">Delaware Dryers</room>
+			</hall>
+			<hall name="Endicott">
+				<room id="1040624">Endicott Washers</room>
+				<room id="1040646">Endicott Dryers</room>
+			</hall>
 		</campus>
 		<campus name="Susquehanna Graduate Community">
 			<room id="1013011">Brandywine</room>
