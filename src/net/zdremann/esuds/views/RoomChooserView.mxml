@@ -135,6 +135,7 @@
 						if (roomChooser.dataProvider.getItemAt(i).id == FlexGlobals.topLevelApplication.persistenceManager.getProperty("room"))
 						{
 							roomChooser.selectedIndex = i;
+							callLater(roomChooser.ensureIndexIsVisible,[i]);
 							break;
 						}
 						
