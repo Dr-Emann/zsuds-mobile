@@ -29,7 +29,13 @@
 			switch(e.keyCode)
 			{
 			case Keyboard.BACK:
-				back();
+				FlexGlobals.topLevelApplication.persistenceManager.save();
+				FlexGlobals.topLevelApplication.persistenceManager.load();
+				
+				// If no room is chosen, and user tries to go back, exit the app
+				if (!FlexGlobals.topLevelApplication.persistenceManager.getProperty("room"))
+					NativeApplication.nativeApplication.exit();
+				
 				break;
 			}
 		}

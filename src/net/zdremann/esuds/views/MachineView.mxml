@@ -44,8 +44,6 @@
 		public function init():void
 		{
 			//machineList.addEventListener(MouseEvent.MOUSE_UP, machineListTouchInteractionEnd_Handler);
-			if(Capabilities.version.indexOf("AND")==0)
-				this.addEventListener(KeyboardEvent.KEY_DOWN, onKeyDown_Handler);
 			
 			var arrLength:int = machineListData.length;
 			
@@ -67,15 +65,6 @@
 			}
 		}
 		
-		private function onKeyDown_Handler(e:KeyboardEvent):void 
-		{
-			switch(e.keyCode)
-			{
-			case Keyboard.BACK:
-				back();
-				break;
-			}
-		}
 		
 		public function back():void
 		{
@@ -217,9 +206,10 @@
 			{ x:stage.mouseX, y:stage.mouseY, scrollPos:machineList.layout.verticalScrollPosition },
 			{ x:stage.mouseX, y:stage.mouseY, scrollPos:machineList.layout.verticalScrollPosition }];
 			dragStart = { x:stage.mouseX, y:stage.mouseY, scrollPos:machineList.layout.verticalScrollPosition };
-			this.addEventListener(MouseEvent.MOUSE_MOVE, dragging);
 			
-			this.addEventListener(MouseEvent.MOUSE_UP, endDrag);
+			stage.addEventListener(MouseEvent.MOUSE_MOVE, dragging);
+			
+			stage.addEventListener(MouseEvent.MOUSE_UP, endDrag);
 			stage.addEventListener(Event.MOUSE_LEAVE, endDrag);
 			FlexGlobals.topLevelApplication.addEventListener(Event.DEACTIVATE, endDrag);
 		}
@@ -237,16 +227,14 @@
 				
 			this.prevPos.push( { x:stage.mouseX, y:stage.mouseY, scrollPos:machineList.layout.verticalScrollPosition } );
 			this.prevPos.shift();
-			this.addEventListener(MouseEvent.MOUSE_UP, endDrag);
-			stage.addEventListener(Event.MOUSE_LEAVE, endDrag);
 		}
 		
 		private function endDrag(e:Event):void 
 		{
 			machineList.mouseChildren = true;
 			
-			this.removeEventListener(MouseEvent.MOUSE_MOVE, dragging);
-			this.removeEventListener(MouseEvent.MOUSE_UP, endDrag);
+			stage.removeEventListener(MouseEvent.MOUSE_MOVE, dragging);
+			stage.removeEventListener(MouseEvent.MOUSE_UP, endDrag);
 			stage.removeEventListener(Event.MOUSE_LEAVE, endDrag);
 			FlexGlobals.topLevelApplication.removeEventListener(Event.DEACTIVATE, endDrag);
 			
