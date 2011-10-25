@@ -44,8 +44,6 @@
 		public function init():void
 		{
 			//machineList.addEventListener(MouseEvent.MOUSE_UP, machineListTouchInteractionEnd_Handler);
-			if(Capabilities.version.indexOf("AND")==0)
-				this.addEventListener(KeyboardEvent.KEY_DOWN, onKeyDown_Handler);
 			
 			var arrLength:int = machineListData.length;
 			
@@ -67,15 +65,6 @@
 			}
 		}
 		
-		private function onKeyDown_Handler(e:KeyboardEvent):void 
-		{
-			switch(e.keyCode)
-			{
-			case Keyboard.BACK:
-				back();
-				break;
-			}
-		}
 		
 		public function back():void
 		{
