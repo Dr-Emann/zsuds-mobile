@@ -199,6 +199,7 @@ package net.zdremann.esuds
 		
 		private function notifSubitBtnClick_Handler(e:MouseEvent):void 
 		{
+			notifEmailInput.errorString = "";
 			emailValidator.validate();
 			if (!notifEmailInput.errorString)
 			{
