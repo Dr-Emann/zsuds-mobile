@@ -190,6 +190,7 @@
 		<s:change>
 			<![CDATA[
 				FlexGlobals.topLevelApplication.persistenceManager.setProperty('room', roomChooser.selectedItem.id.toString());
+				FlexGlobals.topLevelApplication.persistenceManager.setProperty('roomName', roomChooser.selectedItem.label.toString());
 				FlexGlobals.topLevelApplication.persistenceManager.setProperty('school', this.data);
 				navigator.popToFirstView();
 			]]>

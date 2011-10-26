@@ -41,6 +41,9 @@
 		
 		public function onViewActivate():void
 		{
+			if(FlexGlobals.topLevelApplication.persistenceManager.getProperty("roomName"))
+				this.title = FlexGlobals.topLevelApplication.persistenceManager.getProperty("roomName") as String;
+			
 			if (navigator.poppedViewReturnedObject is Array)
 			{
 				this.data = navigator.poppedViewReturnedObject;
