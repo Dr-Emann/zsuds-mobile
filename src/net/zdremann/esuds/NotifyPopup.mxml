@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:SkinnablePopUpContainer xmlns:fx="http://ns.adobe.com/mxml/2009"    
+						   xmlns:mx="library://ns.adobe.com/flex/mx"
+						   xmlns:s="library://ns.adobe.com/flex/spark"
+						   skinClass="net.zdremann.esuds.skins.MyPopupSkin" alpha=".4" mouseChildren="false" mouseEnabled="false" >
+	<s:layout>
+		<s:VerticalLayout gap="20"
+						  paddingBottom="20"
+						  paddingLeft="20"
+						  paddingRight="20"
+						  paddingTop="20"
+						  horizontalAlign="center" />
+	</s:layout>
+	<fx:Script>
+		<![CDATA[
+import flash.events.TimerEvent;
+import flash.utils.Timer;
+			private var _message:String;
+			private var _time:int = 1500;
+			private var timer:Timer;
+			
+			import flash.display.DisplayObjectContainer;
+			override public function open(owner:flash.display.DisplayObjectContainer, modal:Boolean = false):void 
+			{
+				timer = new Timer(time, 1);
+				timer.addEventListener(TimerEvent.TIMER, onTimer, false, 0, true);
+				timer.start();
+				super.open(owner, modal);
+			}
+			
+			override public function close(commit:Boolean = false, data:* = null):void 
+			{
+				timer = null;
+				super.close(commit, data);
+			}
+			
+			[Bindable]
+			public function get time():int { return _time; }
+			public function set time(value:int):void
+			{
+				_time = value;
+				timer.delay = value;
+				timer.reset();
+				timer.start();
+			}
+			
+			private function onTimer(e:TimerEvent):void 
+			{
+				this.close();
+			}
+			
+			[Bindable]
+			public function get message():String
+			{
+				return _message;
+			}
+			
+			public function set message(value:String):void
+			{
+				_message = value;
+			}
+			
+			private function onClick(commit:Boolean):void
+			{
+				close(commit);
+			}
+		]]>
+	</fx:Script>
+	<s:RichText text="{message}" width="100%" />
+</s:SkinnablePopUpContainer>

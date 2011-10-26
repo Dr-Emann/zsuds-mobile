@@ -27,6 +27,7 @@ package net.zdremann.esuds
 	import spark.events.PopUpEvent;
 	import net.zdremann.esuds.ErrorPopup;
 	import net.zdremann.esuds.PhoneChooserPopup;
+	import net.zdremann.esuds.NotifyPopup;
 	/**
 	 * ...
 	 * @author Zachary Dremann
@@ -364,6 +365,16 @@ package net.zdremann.esuds
 				this.currentPopup = errorPopup;
 				errorPopup.open(this.owner, true);
 				PopUpManager.centerPopUp(errorPopup);
+			}
+			else
+			{
+				var notifyPopup:NotifyPopup = new NotifyPopup();
+				notifyPopup.message = "You will be notified";
+				notifyPopup.maxWidth = this.width;
+				notifyPopup.maxHeight = this.height;
+				this.currentPopup = notifyPopup;
+				notifyPopup.open(this.owner, false);
+				PopUpManager.centerPopUp(notifyPopup);
 			}
 		}
 		
