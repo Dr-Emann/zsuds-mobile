@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <application xmlns="http://ns.adobe.com/air/application/2.7">
   <id>air.net.zdremann.esuds.esudsandroid</id>
-  <versionNumber>4.5</versionNumber>
+  <versionNumber>4.90</versionNumber>
   <supportedProfiles>mobileDevice</supportedProfiles>
   <filename>esudsandroid</filename>
   <name>Washer Check</name>
