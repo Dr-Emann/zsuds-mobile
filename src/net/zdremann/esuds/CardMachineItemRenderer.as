@@ -312,7 +312,7 @@ package net.zdremann.esuds
 			
 			var vars:URLVariables = new URLVariables();
 			var req:URLRequest = new URLRequest("http://stevenson.esuds.net/RoomStatus/requestNotification.do");
-			vars.roomId = FlexGlobals.topLevelApplication.persistenceManager.getProperty('room').roomId;
+			vars.roomId = FlexGlobals.topLevelApplication.persistenceManager.getProperty('room');
 			vars.emailAddress = email;
 			vars.selectedMachines = selectedMachine;
 			req.data = vars;

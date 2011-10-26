@@ -88,7 +88,7 @@
 		{
 			var loader:flash.net.URLLoader = new URLLoader();
 			loader.addEventListener(Event.COMPLETE, loaderCompleate_Handler);
-			loader.load(new URLRequest("http://stevenson.esuds.net/RoomStatus/machineStatus.i?bottomLocationId="+ FlexGlobals.topLevelApplication.persistenceManager.getProperty("room").roomId));
+			loader.load(new URLRequest("http://stevenson.esuds.net/RoomStatus/machineStatus.i?bottomLocationId="+ FlexGlobals.topLevelApplication.persistenceManager.getProperty("room")));
 		}
 		private function loaderCompleate_Handler(e:Event):void
 		{
