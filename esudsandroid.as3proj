@@ -4,7 +4,7 @@
   <output>
     <movie outputType="Application" />
     <movie input="" />
-    <movie path="bin\esudsandroid.swf" />
+    <movie path="bin\zsuds-mobile.swf" />
     <movie fps="30" />
     <movie width="480" />
     <movie height="762" />

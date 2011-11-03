@@ -1,19 +1,19 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <application xmlns="http://ns.adobe.com/air/application/2.7">
-  <id>air.net.zdremann.esuds.esudsandroid</id>
-  <versionNumber>4.90</versionNumber>
+  <id>air.net.zdremann.zsuds</id>
+  <versionNumber>10</versionNumber>
   <supportedProfiles>mobileDevice</supportedProfiles>
-  <filename>esudsandroid</filename>
+  <filename>zsuds-mobile</filename>
   <name>Washer Check</name>
   <android>
     <manifestAdditions><![CDATA[<manifest android:installLocation="auto">
 	<uses-permission android:name="android.permission.INTERNET" />
-	<uses-feature android:required="true" android:name="android.hardware.touchscreen.multitouch" />
+	<uses-feature android:required="false" android:name="android.hardware.touchscreen.multitouch" />
 </manifest>]]></manifestAdditions>
   </android>
   <initialWindow>
-    <title>esudsandroid</title>
-    <content>esudsandroid.swf</content>
+    <title>Washer Check</title>
+    <content>zsuds-mobile.swf</content>
     <visible>true</visible>
     <autoOrients>true</autoOrients>
     <!--<aspectRatio>landscape</aspectRatio>-->
@@ -23,6 +23,11 @@
   </initialWindow>
   <icon>
     <image72x72>icons/icon_72.png</image72x72>
+    <image16x16>icons/icon_16.png</image16x16>
+    <image32x32>icons/icon_32.png</image32x32>
+    <image48x48>icons/icon_48.png</image48x48>
+    <image128x128>icons/icon_128.png</image128x128>
+    <image512x512>icons/icon_512.png</image512x512>
   </icon>
   <!-- 
 	AIR options:
@@ -38,4 +43,7 @@
     <InfoAdditions><![CDATA[<key>UIApplicationExitsOnSuspend</key>
 <string>YES</string>]]></InfoAdditions>
   </iPhone>
+  <description>A program to check the status of washers and dryers on several college campuses, where supported by esuds.</description>
+  <copyright>Zachary Dremann</copyright>
+  <versionLabel>1.00</versionLabel>
 </application>

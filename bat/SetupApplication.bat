@@ -7,10 +7,10 @@
 :: NOTICE: all paths are relative to project root
 
 :: Your certificate information
-set CERT_NAME="esudsandroid"
-set CERT_PASS=1123581321
-set CERT_FILE="bat\esudsandroid.p12"
-set SIGNING_OPTIONS=-storetype pkcs12 -keystore %CERT_FILE% -storepass %CERT_PASS%
+set CERT_NAME="Zachary Dremann"
+set CERT_PASS=GpS10945
+set CERT_FILE="bat\my-key.keystore"
+set SIGNING_OPTIONS=-storetype JKS -keystore %CERT_FILE% -storepass %CERT_PASS%
 
 :: Application descriptor
 set APP_XML=application.xml
@@ -20,11 +20,11 @@ set APP_DIR=bin
 set FILE_OR_DIR=-C %APP_DIR% .
 
 :: Your application ID (must match <id> of Application descriptor)
-set APP_ID=air.net.zdremann.esuds.esudsandroid
+set APP_ID=air.net.zdremann.zsuds
 
 :: Output
 set APK_PATH=apk
-set APK_NAME=esudsandroid
+set APK_NAME=zsuds-mobile
 
 :: Debugging using a custom IP
 set DEBUG_IP=
