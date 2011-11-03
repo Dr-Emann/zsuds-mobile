@@ -67,8 +67,8 @@ import mx.collections.ArrayList;
 		</s:itemRenderer>
 	</s:List>
 	<s:HGroup width="100%">
-		<s:Button label="Confirm" width="50%" click="onClick(true)" />
-		<s:Button label="Cancel"  width="50%" click="onClick(false)" />
+		<s:Button label="Confirm" width="100%" click="onClick(true)" enabled="{chooserList.selectedItem}" visible="{chooserList.selectedItem}" includeInLayout="{chooserList.selectedItem}" />
+		<s:Button label="Cancel"  width="100%" click="onClick(false)" />
 	</s:HGroup>
 
 </s:SkinnablePopUpContainer>
