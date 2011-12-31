@@ -12,11 +12,15 @@ public class TmpActivity extends Activity {
 	{
 		super.onCreate(savedInstanceState);
 		Intent intent = new Intent(getApplicationContext(),CheckMachineAvailableService.class);
-		intent.putExtra("machineNum", 4);
+		intent.putExtra("machineNum", 1);
 		intent.putExtra("roomId", 1040368);
-		PendingIntent operation = PendingIntent.getService(getApplicationContext(), 0, intent,0);
+		startService(intent);
+		/*PendingIntent operation = PendingIntent.getService(getApplicationContext(), 0, intent,0);
 		AlarmManager am = (AlarmManager)getSystemService(ALARM_SERVICE);
-		long time = System.currentTimeMillis() + 10000;
+		long time = System.currentTimeMillis() + 5000;
 		am.set(AlarmManager.RTC, time, operation);
+		*/
+		setContentView(R.layout.main);
+		finish();
 	}
 }

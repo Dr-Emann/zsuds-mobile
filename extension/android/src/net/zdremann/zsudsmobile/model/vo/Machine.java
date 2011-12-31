@@ -1,11 +1,11 @@
-package net.zdremann.zsudsmobile;
+package net.zdremann.zsudsmobile.model.vo;
 
 public class Machine {
 	public Machine()
 	{
-		
+		this.status = MachineStatus.UNKNOWN;
 	}
-	public Machine(int id, int num, CharSequence status)
+	public Machine(int id, int num, MachineStatus status)
 	{
 		this.id = id;
 		this.num = num;
@@ -13,7 +13,8 @@ public class Machine {
 	}
 	public int id;
 	public int num;
-	public CharSequence status;
+	public MachineStatus status;
+	public MachineType type;
 	public int timeRemaining;
 	
 	@Override

@@ -2,6 +2,9 @@ package net.zdremann.zsudsmobile;
 
 import java.util.Vector;
 
+import net.zdremann.zsudsmobile.model.vo.Machine;
+import net.zdremann.zsudsmobile.model.vo.MachineStatus;
+
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
@@ -63,9 +66,6 @@ public class MyMachineContentHandler extends DefaultHandler {
 				case 1:
 					machine.num = Integer.parseInt(lastContent);
 					break;
-				case 3:
-					machine.status = lastContent;
-					break;
 				case 4:
 					if (!lastContent.equals("BLECK"))
 						machine.timeRemaining = Integer.parseInt(lastContent);
@@ -78,7 +78,16 @@ public class MyMachineContentHandler extends DefaultHandler {
 				}
 				_col++;
 			} else if (localName.equals("font")) {
-				machine.status = lastContent;
+				if(lastContent.equalsIgnoreCase("available"))
+					machine.status = MachineStatus.AVAILABLE;
+				else if (lastContent.equalsIgnoreCase("cycle complete"))
+					machine.status = MachineStatus.CYCLE_COMPLETE;
+				else if (lastContent.equalsIgnoreCase("in use"))
+					machine.status = MachineStatus.IN_USE;
+				else if (lastContent.equalsIgnoreCase("unavailable"))
+					machine.status = MachineStatus.UNAVAILABLE;
+				else
+					machine.status = MachineStatus.UNKNOWN;
 			}
 		}
 	}
@@ -90,6 +99,10 @@ public class MyMachineContentHandler extends DefaultHandler {
 		}
 		// If no machines have the chosen number
 		return null;
+	}
+	public Vector<Machine> getMachines()
+	{
+		return machines;
 	}
 
 	@Override
