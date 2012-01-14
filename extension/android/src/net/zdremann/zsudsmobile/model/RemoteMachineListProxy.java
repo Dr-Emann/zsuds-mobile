@@ -10,6 +10,7 @@ import java.util.Vector;
 
 import net.zdremann.zsudsmobile.MyMachineContentHandler;
 import net.zdremann.zsudsmobile.model.vo.Machine;
+import net.zdremann.zsudsmobile.model.vo.MachineType;
 
 import org.xml.sax.SAXException;
 
@@ -133,6 +134,19 @@ public class RemoteMachineListProxy implements IMachineListProxy
 		}
 		// If no machines match:
 		return null;
+	}
+
+	@Override
+	public Vector<Machine> getListOfType(MachineType type) {
+		Vector<Machine> returnList = new Vector<Machine>();
+		for(Machine machine : _machineList)
+		{
+			if(machine.type.equals(type))
+			{
+				returnList.add(machine);
+			}
+		}
+		return returnList;
 	}
 
 }

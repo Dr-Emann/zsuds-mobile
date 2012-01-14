@@ -2,6 +2,8 @@ package net.zdremann.zsudsmobile.model;
 
 import java.util.Vector;
 
+import android.util.Log;
+
 import net.zdremann.zsudsmobile.model.vo.Machine;
 import net.zdremann.zsudsmobile.model.vo.MachineStatus;
 import net.zdremann.zsudsmobile.model.vo.MachineType;
@@ -20,8 +22,23 @@ public class LocalTestMachineListProxy implements IMachineListProxy
 			curr = new Machine();
 			curr.id = (int)(Math.random()*500);
 			curr.num = i+1;
-			curr.type = (i<(arrlen<<1))?MachineType.WASHER:MachineType.DRYER;
-			curr.status = (Math.random()*2<1)?MachineStatus.IN_USE:MachineStatus.AVAILABLE;
+			Log.v("bitshift", (arrlen>>1)+"");
+			curr.type = (i<(arrlen>>1))?MachineType.WASHER:MachineType.DRYER;
+			int rand = (int)(Math.random()*3);
+			switch(rand)
+			{
+			case 0:
+				curr.status = MachineStatus.AVAILABLE;
+				break;
+			case 1:
+				curr.status = MachineStatus.IN_USE;
+				break;
+			case 2:
+				curr.status = MachineStatus.CYCLE_COMPLETE;
+				break;
+			default:
+				curr.status = MachineStatus.CYCLE_COMPLETE;
+			}
 			if(curr.status.equals(MachineStatus.IN_USE))
 				curr.timeRemaining = 1;
 			_machineList.add(curr);
@@ -45,6 +62,19 @@ public class LocalTestMachineListProxy implements IMachineListProxy
 		}
 		// If no machines are the correct number
 		return null;
+	}
+
+	@Override
+	public Vector<Machine> getListOfType(MachineType type) {
+		Vector<Machine> returnList = new Vector<Machine>(_machineList.capacity());
+		for(Machine machine : _machineList)
+		{
+			if(machine.type.equals(type))
+			{
+				returnList.add(machine);
+			}
+		}
+		return returnList;
 	}
 
 }

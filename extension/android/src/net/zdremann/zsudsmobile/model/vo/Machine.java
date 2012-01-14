@@ -20,6 +20,6 @@ public class Machine {
 	@Override
 	public String toString()
 	{
-		return this.num + " "+this.status+ " " + timeRemaining;
+		return this.type + ": " +this.num + " "+this.status.toString()+ " " + timeRemaining;
 	}
 }
