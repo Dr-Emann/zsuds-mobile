@@ -151,6 +151,37 @@
 			</hall>
 		</campus>
 	</school>
+	<school name="Stevens Institute of Technology">
+		<campus name="main">
+			<hall name="Alexander C. Humphreys Hall">
+				<room id="6809">Alexander C. Humphreys 1st Floor</room>
+			</hall>
+			<hall name="Castle Point Apartment">
+				<room id="6810">Castle Point 2nd Floor</room>
+				<room id="6811">Castle Point 4th Floor</room>
+			</hall>
+			<hall name="Charles Hayden Hall">
+				<room id="6812">Charles Hayden 2nd Floor</room>
+			</hall>
+			<hall name="Edgar Palmer Hall">
+				<room id="6813">Edgar Palmer North</room>
+				<room id="6814">Edgar Palmer South</room>
+			</hall>
+			<hall name="Harvey N. Davis Hall">
+				<room id="6815">Harvey N. Davis 1st Floor</room>
+			</hall>
+			<hall name="Jonas Hall">
+				<room id="6816">Jonas 1st Floor</room>
+			</hall>
+			<hall name="Lore El Center">
+				<room id="6818">Lore El Basement</room>
+			</hall>
+			<hall name="River Terrace">
+				<room id="6807">600-602 River Terrace Basement</room>
+				<room id="6808">604-606 River Terrace Basement</room>
+			</hall>
+		</campus>
+	</school>
 	<school name="Stevenson University">
 		<campus name="main">
 			<room id="1166">Belfast Hall</room>
