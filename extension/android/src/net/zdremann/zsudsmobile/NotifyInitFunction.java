@@ -12,7 +12,7 @@ public class NotifyInitFunction implements FREFunction {
 
 	@Override
 	public FREObject call(FREContext context, FREObject[] passedArgs) {
-		NotifyExtensionContext notifyContext = (NotifyExtensionContext)context;
+		final NotifyExtensionContext notifyContext = (NotifyExtensionContext)context;
 		Activity activity = notifyContext.getActivity();
 		notifyContext.am = (AlarmManager)activity.getSystemService(Context.ALARM_SERVICE);
 		return null;

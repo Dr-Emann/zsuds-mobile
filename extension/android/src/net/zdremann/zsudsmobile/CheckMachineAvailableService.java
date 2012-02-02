@@ -29,7 +29,7 @@ public class CheckMachineAvailableService extends IntentService {
 		final int machineNum = intent.getIntExtra("machineNum", -1);
 		final int roomId = intent.getIntExtra("roomId", -1);
 
-		IMachineListProxy machines = new LocalTestMachineListProxy();
+		IMachineListProxy machines = new RemoteMachineListProxy(getApplicationContext());
 		try
 		{
 			machines.load(roomId);
@@ -52,7 +52,7 @@ public class CheckMachineAvailableService extends IntentService {
 		}
 		else
 		{
-			Log.i("Status", machine.status.toString());
+			Log.v("Status", machine.status.toString());
 			if(machine.status.equals(MachineStatus.AVAILABLE))
 			{
 				final CharSequence tickerText = "Machine "+ machineNum + " Available";

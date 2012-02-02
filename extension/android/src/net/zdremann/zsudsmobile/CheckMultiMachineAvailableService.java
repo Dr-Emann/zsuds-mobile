@@ -5,6 +5,7 @@ import java.util.Vector;
 
 import net.zdremann.zsudsmobile.model.IMachineListProxy;
 import net.zdremann.zsudsmobile.model.LocalTestMachineListProxy;
+import net.zdremann.zsudsmobile.model.RemoteMachineListProxy;
 import net.zdremann.zsudsmobile.model.vo.Machine;
 import net.zdremann.zsudsmobile.model.vo.MachineStatus;
 import net.zdremann.zsudsmobile.model.vo.MachineType;
@@ -32,7 +33,7 @@ public class CheckMultiMachineAvailableService extends IntentService {
 		final int roomId = intent.getIntExtra("roomId", -1);
 		final int numOfMachines = intent.getIntExtra("numOfMachines", 0);
 		final MachineType type = (intent.getStringExtra("type").toLowerCase().contains("washer"))?MachineType.WASHER:MachineType.DRYER;
-		IMachineListProxy machineProxy = new LocalTestMachineListProxy();
+		IMachineListProxy machineProxy = new RemoteMachineListProxy(getApplicationContext());
 		try
 		{
 			machineProxy.load(roomId);

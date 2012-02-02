@@ -20,8 +20,10 @@ public class NotifyExtensionContext extends FREContext {
 	@Override
 	public Map<String, FREFunction> getFunctions() {
 		Map<String,FREFunction> functionMap = new HashMap<String, FREFunction>();
+		functionMap.put("isSupported", new NotificationAvailableFunction());
 		functionMap.put("initMe", new NotifyInitFunction());
-		functionMap.put("watchMachines", new MachineWatcherFunction());
+		functionMap.put("watchForMachine", new OneMachineWatcherFunction());
+		functionMap.put("watchForNMachines", new WatchForNMachinesFunction());
 		//functionMap.put("cancelMe", new NotifyCancelFunction());
 		return functionMap;
 	}
