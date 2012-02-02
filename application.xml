@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<application xmlns="http://ns.adobe.com/air/application/2.7">
+<application xmlns="http://ns.adobe.com/air/application/3.1">
   <id>air.net.zdremann.zsuds</id>
   <versionNumber>10</versionNumber>
   <supportedProfiles>mobileDevice</supportedProfiles>
