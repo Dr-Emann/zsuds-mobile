@@ -168,6 +168,15 @@
 			</s:click>
 		</s:ViewMenuItem>
 	</s:viewMenuItems>
+	<s:navigationContent>
+		<s:Button id="changeBtn" label="{(this.width>700)?'Change School':'Change'}">
+			<s:click>
+			<![CDATA[
+			this.navigator.pushView(SchoolChooserView);
+			]]>
+			</s:click>
+		</s:Button>
+	</s:navigationContent>
 	<s:List id="machineList" dataProvider="{machineListData}"
 			itemRenderer="net.zdremann.esuds.ClothesMachineItemRenderer"
 			touchInteractionStart="stage.frameRate=60;" touchInteractionEnd="stage.frameRate=10;"
