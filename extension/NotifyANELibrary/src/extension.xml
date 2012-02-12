@@ -1,0 +1,15 @@
+<extension xmlns="http://ns.adobe.com/air/extension/2.5">
+	<id>net.zdremann.Notify</id>
+	<versionNumber>1</versionNumber>
+
+	<platforms>
+		<platform name="Android-ARM">
+
+			<applicationDeployment>
+				<nativeLibrary>NotifyANENative.jar</nativeLibrary>
+				<initializer>net.zdremann.zsudsmobile.NotifyExtension</initializer>
+			</applicationDeployment>
+
+		</platform>
+	</platforms>
+</extension>
