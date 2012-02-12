@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<application xmlns="http://ns.adobe.com/air/application/2.7">
+<application xmlns="http://ns.adobe.com/air/application/3.1">
   <id>air.net.zdremann.zsuds</id>
-  <versionNumber>10</versionNumber>
+  <versionNumber>12</versionNumber>
   <supportedProfiles>mobileDevice</supportedProfiles>
   <filename>zsuds-mobile</filename>
   <name>Washer Check</name>
@@ -45,5 +45,5 @@
   </iPhone>
   <description>A program to check the status of washers and dryers on several college campuses, where supported by esuds.</description>
   <copyright>Zachary Dremann</copyright>
-  <versionLabel>1.00</versionLabel>
+  <versionLabel>1.15</versionLabel>
 </application>

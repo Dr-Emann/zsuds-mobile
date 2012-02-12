@@ -74,7 +74,7 @@
 			<room id="319">Morewood Gardens A Tower</room>
 			<room id="104">Moorwood Gardens D Tower</room>
 			<room id="327">Mudge House B Tower</room>
-			<room id="445">Mudge House C Tower</room>
+			<room id="446">Mudge House C Tower</room>
 			<room id="329">Scobell House</room>
 			<room id="333">Shirley Apartments</room>
 			<room id="339">Stever House Laundry</room>
@@ -148,6 +148,37 @@
 				<room id="1037724">Century Park 2</room>
 				<room id="1037746">Century Park 3</room>
 				<room id="1037725">Century Park 4</room>
+			</hall>
+		</campus>
+	</school>
+	<school name="Stevens Institute of Technology">
+		<campus name="main">
+			<hall name="Alexander C. Humphreys Hall">
+				<room id="6809">Alexander C. Humphreys 1st Floor</room>
+			</hall>
+			<hall name="Castle Point Apartment">
+				<room id="6810">Castle Point 2nd Floor</room>
+				<room id="6811">Castle Point 4th Floor</room>
+			</hall>
+			<hall name="Charles Hayden Hall">
+				<room id="6812">Charles Hayden 2nd Floor</room>
+			</hall>
+			<hall name="Edgar Palmer Hall">
+				<room id="6813">Edgar Palmer North</room>
+				<room id="6814">Edgar Palmer South</room>
+			</hall>
+			<hall name="Harvey N. Davis Hall">
+				<room id="6815">Harvey N. Davis 1st Floor</room>
+			</hall>
+			<hall name="Jonas Hall">
+				<room id="6816">Jonas 1st Floor</room>
+			</hall>
+			<hall name="Lore El Center">
+				<room id="6818">Lore El Basement</room>
+			</hall>
+			<hall name="River Terrace">
+				<room id="6807">600-602 River Terrace Basement</room>
+				<room id="6808">604-606 River Terrace Basement</room>
 			</hall>
 		</campus>
 	</school>
