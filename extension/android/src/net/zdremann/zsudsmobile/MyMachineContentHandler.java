@@ -2,12 +2,17 @@ package net.zdremann.zsudsmobile;
 
 import java.util.Vector;
 
+
+
 import net.zdremann.zsudsmobile.model.vo.Machine;
 import net.zdremann.zsudsmobile.model.vo.MachineStatus;
+import net.zdremann.zsudsmobile.model.vo.MachineType;
 
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
+
+
 
 public class MyMachineContentHandler extends DefaultHandler {
 	private Boolean _lastClassName;
@@ -53,41 +58,74 @@ public class MyMachineContentHandler extends DefaultHandler {
 				lastContent = "";
 				return;
 			}
-			final Machine machine = machines.lastElement();
-			// Log.i("Col: "+_col+" , "+((_lastClassName)?"true":"false"),
-			// lastContent);
-			if (localName.equals("td") && _lastClassName) {
-
-				switch (_col) {
-				case 0:
-					if (!lastContent.equals("BLECK"))
-						machine.id = Integer.parseInt(lastContent);
-					break;
-				case 1:
-					machine.num = Integer.parseInt(lastContent);
-					break;
-				case 4:
-					if (!lastContent.equals("BLECK"))
-						machine.timeRemaining = Integer.parseInt(lastContent);
+			if(_lastClassName)
+			{
+				final Machine machine = machines.lastElement();
+				// Log.i("Col: "+_col+" , "+((_lastClassName)?"true":"false"),
+				// lastContent);
+				if (localName.equals("td")) {
+					
+					switch (_col) {
+					case 0:
+						if (!lastContent.equals("BLECK"))
+						{
+							try
+							{
+								machine.id = Integer.parseInt(lastContent);
+							}
+							catch(NumberFormatException e)
+							{
+								machine.id = 0;
+							}
+						}
+						break;
+					case 1:
+						try{
+							machine.num = Integer.parseInt(lastContent);
+						}
+						catch(NumberFormatException e)
+						{
+							machine.num = 0;
+						}
+						break;
+					case 2:
+						if(lastContent.toLowerCase().contains("washer"))
+							machine.type = MachineType.WASHER;
+						else if(lastContent.toLowerCase().contains("dryer"))
+							machine.type = MachineType.DRYER;
+						else
+							machine.type = MachineType.UNKNOWN;
+					case 4:
+						if (!lastContent.equals("BLECK"))
+						{
+							try{
+								machine.timeRemaining = Integer.parseInt(lastContent);
+							}
+							catch (NumberFormatException e)
+							{
+								machine.timeRemaining = 0;
+							}
+						}
+						else
+							machine.timeRemaining = 0;
+						break;
+					default:
+						lastContent = "";
+						break;
+					}
+					_col++;
+				} else if (localName.equals("font")) {
+					if(lastContent.equalsIgnoreCase("available"))
+						machine.status = MachineStatus.AVAILABLE;
+					else if (lastContent.equalsIgnoreCase("cycle complete"))
+						machine.status = MachineStatus.CYCLE_COMPLETE;
+					else if (lastContent.equalsIgnoreCase("in use"))
+						machine.status = MachineStatus.IN_USE;
+					else if (lastContent.equalsIgnoreCase("unavailable"))
+						machine.status = MachineStatus.UNAVAILABLE;
 					else
-						machine.timeRemaining = 0;
-					break;
-				default:
-					lastContent = "";
-					break;
+						machine.status = MachineStatus.UNKNOWN;
 				}
-				_col++;
-			} else if (localName.equals("font")) {
-				if(lastContent.equalsIgnoreCase("available"))
-					machine.status = MachineStatus.AVAILABLE;
-				else if (lastContent.equalsIgnoreCase("cycle complete"))
-					machine.status = MachineStatus.CYCLE_COMPLETE;
-				else if (lastContent.equalsIgnoreCase("in use"))
-					machine.status = MachineStatus.IN_USE;
-				else if (lastContent.equalsIgnoreCase("unavailable"))
-					machine.status = MachineStatus.UNAVAILABLE;
-				else
-					machine.status = MachineStatus.UNKNOWN;
 			}
 		}
 	}
@@ -126,7 +164,8 @@ public class MyMachineContentHandler extends DefaultHandler {
 				_lastClassName = false;
 			_inRow = true;
 			_col = 0;
-			machines.add(new Machine());
+			if(_lastClassName)
+				machines.add(new Machine());
 		}
 	}
 }

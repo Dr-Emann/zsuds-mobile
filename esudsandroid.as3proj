@@ -52,6 +52,7 @@
   <!-- SWC Libraries -->
   <libraryPaths>
     <element path="libs\greensock.swc" />
+    <element path="extension\HelloANE.ane" />
   </libraryPaths>
   <!-- External Libraries -->
   <externalLibraryPaths>

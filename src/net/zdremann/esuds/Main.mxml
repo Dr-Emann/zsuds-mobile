@@ -2,8 +2,8 @@
 <s:ViewNavigatorApplication xmlns:fx="http://ns.adobe.com/mxml/2009"
                             xmlns:s="library://ns.adobe.com/flex/spark"
 							xmlns:views="net.zdremann.esuds.views.*"
-					        firstView="net.zdremann.esuds.views.HomeView" creationComplete="this.persistenceManager.load();Multitouch.inputMode=MultitouchInputMode.GESTURE;"
-							addedToStage="stage.frameRate = 10"
+					        firstView="net.zdremann.esuds.views.HomeView" creationComplete="this.onCreationComplete(); this.persistenceManager.load();Multitouch.inputMode=MultitouchInputMode.GESTURE;"
+							addedToStage="stage.frameRate = 10;"
 							deactivate="if(stage){stage.frameRate = .1; this.persistenceManager.save();}" activate="if(stage) stage.frameRate = 10"
 							splashScreenImage="@Embed('/../assets/SplashScreen.png')">
 							
@@ -65,7 +65,17 @@
 		import flash.ui.Multitouch;
 		import flash.ui.MultitouchInputMode;
 		import mx.collections.ArrayList;
+		import net.zdremann.nativeExtensions.Notify.Notify;
 		import spark.managers.PersistenceManager;
+		
+		private function onCreationComplete():void
+		{
+			var n:Notify = new Notify();
+			n.watchForMachine(1040368, 0);
+			n.watchForNMachines(1040368, Notify.MACHINETYPE_WASHER, 2);
+			this.setStyle("color", 0xff0000);
+		}
+		
 		]]>
 	</fx:Script>
 	<s:navigationContent>

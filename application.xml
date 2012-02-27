@@ -8,7 +8,17 @@
   <android>
     <manifestAdditions><![CDATA[<manifest android:installLocation="auto">
 	<uses-permission android:name="android.permission.INTERNET" />
-	<uses-feature android:required="false" android:name="android.hardware.touchscreen.multitouch" />
+	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+	<application android:enabled="true">
+       <activity android:excludeFromRecents="false">
+            <intent-filter>
+               <action android:name="android.intent.action.MAIN"/>
+               <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+       </activity>
+	<service android:name="CheckMachineAvailableService"></service>
+    <service android:name="CheckMultiMachineAvailableService"></service>
+    </application>
 </manifest>]]></manifestAdditions>
   </android>
   <initialWindow>
@@ -46,4 +56,7 @@
   <description>A program to check the status of washers and dryers on several college campuses, where supported by esuds.</description>
   <copyright>Zachary Dremann</copyright>
   <versionLabel>1.15</versionLabel>
+  <extensions>
+    <extensionID>net.zdremann.Notify</extensionID>
+  </extensions>
 </application>

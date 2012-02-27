@@ -2,11 +2,12 @@ package net.zdremann.zsudsmobile;
 
 import java.io.IOException;
 
+import net.zdremann.zsudsmobile.R;
 import net.zdremann.zsudsmobile.model.IMachineListProxy;
-import net.zdremann.zsudsmobile.model.LocalTestMachineListProxy;
 import net.zdremann.zsudsmobile.model.RemoteMachineListProxy;
 import net.zdremann.zsudsmobile.model.vo.Machine;
 import net.zdremann.zsudsmobile.model.vo.MachineStatus;
+
 import android.app.AlarmManager;
 import android.app.IntentService;
 import android.app.Notification;
@@ -38,7 +39,8 @@ public class CheckMachineAvailableService extends IntentService {
 		{
 			Log.d("Connection","No Connection");
 			final long triggerAtTime = System.currentTimeMillis() + 5 * ONE_MIN;
-			final Intent machineIntent = new Intent(this, CheckMachineAvailableService.class);
+			final Intent machineIntent = new Intent();
+			machineIntent.setClassName("net.zdremann.zsudsmobile", "net.zdremann.zsudsmobile.CheckMachineAvailableService");
 			machineIntent.putExtra("machineNum", machineNum);
 			machineIntent.putExtra("roomId", roomId);
 			final PendingIntent operation = PendingIntent.getService(getApplicationContext(), 0, machineIntent, 0);
@@ -81,7 +83,8 @@ public class CheckMachineAvailableService extends IntentService {
 				else
 					additionalTime = 3 * ONE_MIN;
 
-				final Intent machineIntent = new Intent(this, CheckMachineAvailableService.class);
+				final Intent machineIntent = new Intent();
+				machineIntent.setClassName("net.zdremann.zsudsmobile", "net.zdremann.zsudsmobile.CheckMachineAvailableService");
 				machineIntent.putExtra("machineNum", machineNum);
 				machineIntent.putExtra("roomId", roomId);
 				final PendingIntent operation = PendingIntent.getService(getApplicationContext(), 0, machineIntent, 0);

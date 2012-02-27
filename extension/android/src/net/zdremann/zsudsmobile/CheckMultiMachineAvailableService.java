@@ -3,12 +3,13 @@ package net.zdremann.zsudsmobile;
 import java.io.IOException;
 import java.util.Vector;
 
+import net.zdremann.zsudsmobile.R;
 import net.zdremann.zsudsmobile.model.IMachineListProxy;
-import net.zdremann.zsudsmobile.model.LocalTestMachineListProxy;
 import net.zdremann.zsudsmobile.model.RemoteMachineListProxy;
 import net.zdremann.zsudsmobile.model.vo.Machine;
 import net.zdremann.zsudsmobile.model.vo.MachineStatus;
 import net.zdremann.zsudsmobile.model.vo.MachineType;
+
 import android.app.AlarmManager;
 import android.app.IntentService;
 import android.app.Notification;

@@ -17,9 +17,9 @@
                 <action android:name="android.intent.action.MAIN" />
             	<category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity><service android:name="CheckMachineAvailableService" android:exported="false"></service>
+        </activity>
+    <service android:name="CheckMachineAvailableService"></service>
         <service android:name="CheckMultiMachineAvailableService"></service>
-        
-    </application>
+   </application>
 
 </manifest>
