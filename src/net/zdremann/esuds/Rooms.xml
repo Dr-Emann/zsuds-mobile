@@ -104,6 +104,25 @@
 			<room id="7023">Newman Towers Dryers</room>
 		</campus>
 	</school>
+	<school name="Nothern Illinois University">
+		<campus name="main">
+			<room id="1014736">Douglas Hall AB</room>
+			<room id="1014750">Douglas Hall CD</room>
+			<room id="1014716">Grant North C-Tower</room>
+			<room id="1014718">Grant North D-Tower</room>
+			<room id="1014730">Grant South A-Tower</room>
+			<room id="1014715">Grant South B-Tower</room>
+			<room id="1014745">Lincoln Hall AB</room>
+			<room id="1014747">Lincoln Hall CD</room>
+			<room id="1014710">Neptune North</room>
+			<room id="1014728">Neptune East</room>
+			<room id="1014712">Neptune West</room>
+			<room id="1014744">Stevenson North C-Tower</room>
+			<room id="1014734">Stevenson North D-Tower</room>
+			<room id="1014720">Stevenson South A-Tower</room>
+			<room id="1014722">Stevenson South B-Tower</room>
+		</campus>
+	</school>
 	<school name="University of Maryland">
 		<campus name="main">
 			<hall name="Chesapeake Hall">
