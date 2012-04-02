@@ -7,6 +7,7 @@
 		creationComplete="init();" width="100%" height="100%" resize="onResize(event)" gestureSwipe="swipeHandler(event);" deactivate="onDeactivate();">
 	<fx:Script>
 		<![CDATA[
+		import flash.events.IOErrorEvent;
 		import spark.components.ViewNavigatorApplication;
 		import com.greensock.data.TweenLiteVars;
 		import com.greensock.TweenLite;
@@ -88,7 +89,13 @@
 		{
 			var loader:flash.net.URLLoader = new URLLoader();
 			loader.addEventListener(Event.COMPLETE, loaderCompleate_Handler);
+			loader.addEventListener(IOErrorEvent.IO_ERROR, onIOError);
 			loader.load(new URLRequest("http://stevenson.esuds.net/RoomStatus/machineStatus.i?bottomLocationId="+ FlexGlobals.topLevelApplication.persistenceManager.getProperty("room")));
+		}
+		
+		private function onIOError(e:IOErrorEvent):void 
+		{
+			trace("IO Error " + e.text);
 		}
 		private function loaderCompleate_Handler(e:Event):void
 		{

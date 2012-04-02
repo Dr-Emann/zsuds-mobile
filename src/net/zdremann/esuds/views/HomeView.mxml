@@ -8,6 +8,7 @@
 		import flash.display.StageDisplayState;
 		import flash.desktop.NativeApplication;
 		import flash.events.Event;
+		import flash.events.IOErrorEvent;
 		import flash.events.KeyboardEvent;
 		import flash.net.URLLoader;
 		import flash.net.URLRequest;
@@ -30,7 +31,7 @@
 		private function init():void
 		{
 			if(!this.data)
-				this.data = [ { header:true, label:"No Data Found" } ];
+				this.data = [ { header:true, label:"Loading..." } ];
 			this.machineListData = new ArrayList(this.data as Array);
 			if (!FlexGlobals.topLevelApplication.persistenceManager.getProperty("room"))
 			{
@@ -73,7 +74,14 @@
 		{
 			var loader:flash.net.URLLoader = new URLLoader();
 			loader.addEventListener(Event.COMPLETE, loaderCompleate_Handler);
+			loader.addEventListener(IOErrorEvent.IO_ERROR, onLoadError);
 			loader.load(new URLRequest("http://stevenson.esuds.net/RoomStatus/machineStatus.i?bottomLocationId="+FlexGlobals.topLevelApplication.persistenceManager.getProperty("room")));
+		}
+		
+		private function onLoadError(e:IOErrorEvent):void 
+		{
+			this.data = [ { header:true, label:"A loading error occured" } ];
+			this.machineListData = new ArrayList(this.data as Array);
 		}
 		private function loaderCompleate_Handler(e:flash.events.Event):void
 		{
