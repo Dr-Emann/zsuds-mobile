@@ -4,6 +4,7 @@ Supported Colleges:
 * Binghamton University
 * Carnegie Mellon University
 * Loyola University
+* Northern Illinois University
 * University of Maryland
 * University of Southern Mississippi
 * Stevens Institute of Technology
