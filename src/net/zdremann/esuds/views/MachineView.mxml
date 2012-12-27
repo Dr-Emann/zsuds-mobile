@@ -48,14 +48,17 @@
 			
 			var arrLength:int = machineListData.length;
 			
-			if (navigator.context && navigator.context.hasOwnProperty("number"))
+			if (navigator.context && navigator.context is ClothesMachine)
 			{
 				var curMachineNum:int = navigator.context.number;
+				var curMachineType:int = navigator.context.type;
 				for (var i:int = 0; i < arrLength; i ++)
 				{
-					if (machineListData.getItemAt(i).hasOwnProperty("number") && machineListData.getItemAt(i).number == curMachineNum)
+					var machine:* = machineListData.getItemAt(i);
+					if (machine is ClothesMachine && machine.number == curMachineNum && machine.type == curMachineType)
 					{
-						callLater(scrollTo, [i,0]);
+						callLater(scrollTo, [i, 0]);
+						break;
 						//machineList.scroller.viewport.verticalScrollPosition 
 					}
 				}
