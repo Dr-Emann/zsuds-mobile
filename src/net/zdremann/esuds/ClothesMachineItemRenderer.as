@@ -179,37 +179,34 @@ package net.zdremann.esuds
 				
 				return;
 			}
-			else
+			
+			var statusHeight:Number = 0;
+			if (status != -1)
 			{
-				labelWidth = Math.floor(Math.max(viewWidth * labelPercent - paddingInner, 0));
-				statusDisplay.visible = true;
-				timeRemainingDisplay.visible = true;
+				statusDisplay.commitStyles();
+				
+				if(statusDisplay.isTruncated)
+					statusDisplay.text = ClothesMachine.statusToString(status);
+				
+				statusHeight = getElementPreferredHeight(statusDisplay);
 			}
+			var statusWidth:Number = getElementPreferredWidth(statusDisplay);
+			
+			setElementSize(statusDisplay, statusWidth, statusHeight);
+			var statusY:Number = (viewHeight - statusHeight) + paddingTop;
+			
+			setElementPosition(statusDisplay, unscaledWidth / 2 - statusWidth / 2, statusY);
+			
+			labelWidth = Math.max(statusDisplay.x - paddingLeft, 0);
+			statusDisplay.visible = true;
+			timeRemainingDisplay.visible = true;
 			
 			setElementSize(labelDisplay, labelWidth, labelHeight);
 			
 			setElementPosition(labelDisplay, paddingLeft, labelY);
 			labelDisplay.truncateToFit();
 			
-			var statusWidth:Number = Math.floor(Math.max(statusPercent * viewWidth-paddingInner, 0));
-			var statusHeight:Number = 0;
-			if (status != -1)
-			{
-				statusDisplay.commitStyles();
-				
-				if (statusDisplay.isTruncated)
-					statusDisplay.text = ClothesMachine.statusToString(status);
-				
-				statusHeight = getElementPreferredHeight(statusDisplay);
-			}
-			
-			setElementSize(statusDisplay, statusWidth, statusHeight);
-			
-			var statusY:Number = (viewHeight -statusHeight) + paddingTop;
-			setElementPosition(statusDisplay, paddingLeft + labelWidth + 2*paddingInner, statusY);
-			statusDisplay.truncateToFit();
-			
-			var timeRemainingWidth:Number = Math.floor(Math.max(timeRemainingPercent * viewWidth-paddingInner, 0));
+			var timeRemainingWidth:Number = Math.floor(Math.max(viewWidth - statusWidth - labelWidth, 0));
 			var timeRemainingHeight:Number = 0;
 			if (timeRemaining != -1)
 			{
@@ -224,7 +221,7 @@ package net.zdremann.esuds
 			setElementSize(timeRemainingDisplay, timeRemainingWidth, timeRemainingHeight);
 			
 			var timeRemainingY:Number = (viewHeight -timeRemainingHeight) + paddingTop;
-			setElementPosition(timeRemainingDisplay, paddingLeft + labelWidth + statusWidth + 4*paddingInner, timeRemainingY);
+			setElementPosition(timeRemainingDisplay, unscaledWidth - paddingRight - timeRemainingWidth, timeRemainingY);
 			timeRemainingDisplay.truncateToFit();
 			
 		}
